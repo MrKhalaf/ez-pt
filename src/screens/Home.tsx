@@ -9,7 +9,7 @@ export const Home: React.FC = () => {
     const { exercises } = useExercises();
     const { todayProgress, streak } = useProgress();
 
-    const categories = ['Core Stability', 'Lower Body', 'Upper Body', 'Mobility'];
+    const categories = ['Mobility', 'Core Stability', 'Lower Body', 'Upper Body'];
 
     const completedToday = todayProgress.length;
     const totalExercises = exercises.length;

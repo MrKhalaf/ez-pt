@@ -16,7 +16,7 @@ export const ExerciseList: React.FC = () => {
         ? exercises.filter(ex => ex.category === category)
         : exercises;
 
-    const categories = ['All', 'Core Stability', 'Lower Body', 'Upper Body', 'Mobility'];
+    const categories = ['All', 'Mobility', 'Core Stability', 'Lower Body', 'Upper Body'];
 
     return (
         <div className="page">
@@ -51,7 +51,12 @@ export const ExerciseList: React.FC = () => {
                                         <h3>{exercise.name}</h3>
                                         <span className="exercise-category">{exercise.category}</span>
                                     </div>
-                                    {completed && <span className="completed-badge">✓</span>}
+                                    <div className="exercise-header-actions">
+                                        <Link to={`/exercises/edit/${exercise.id}`} className="edit-btn" aria-label="Edit exercise">
+                                            ✏️
+                                        </Link>
+                                        {completed && <span className="completed-badge">✓</span>}
+                                    </div>
                                 </div>
 
                                 <div className="exercise-details">
