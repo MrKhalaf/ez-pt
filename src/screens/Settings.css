@@ -1,0 +1,128 @@
+.settings-section {
+    margin-bottom: var(--spacing-8);
+}
+
+.settings-section h2 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-4);
+    color: var(--color-text-primary);
+}
+
+.setting-item {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-3);
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-label {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: var(--spacing-1);
+}
+
+.setting-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.setting-input {
+    width: 80px;
+    padding: var(--spacing-2) var(--spacing-3);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    text-align: center;
+}
+
+.setting-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* Toggle Switch */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-bg-tertiary);
+    transition: var(--transition-base);
+    border-radius: var(--radius-full);
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition-base);
+    border-radius: 50%;
+}
+
+.toggle input:checked+.toggle-slider {
+    background-color: var(--color-primary);
+}
+
+.toggle input:checked+.toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.about-card {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(67, 56, 202, 0.05) 100%);
+    border: 1px solid rgba(79, 70, 229, 0.3);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-6);
+}
+
+.about-card h3 {
+    margin: 0 0 var(--spacing-2) 0;
+    color: var(--color-primary);
+}
+
+.about-card p {
+    margin: var(--spacing-2) 0;
+    color: var(--color-text-secondary);
+}
+
+.about-card .version {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.about-card .description {
+    margin-top: var(--spacing-4);
+    line-height: 1.6;
+}
