@@ -10,6 +10,50 @@ import './TimerScreen.css';
 type TimerState = 'ready' | 'work' | 'rest' | 'complete';
 type Side = 'left' | 'right' | 'both';
 
+// Circular Progress Ring
+const ProgressRing: React.FC<{
+    progress: number;
+    size: number;
+    strokeWidth: number;
+    color: string;
+    bgColor?: string;
+}> = ({ progress, size, strokeWidth, color, bgColor }) => {
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (Math.min(progress, 100) / 100) * circumference;
+
+    return (
+        <svg width={size} height={size} className="progress-ring">
+            {/* Background ring */}
+            <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={bgColor || 'var(--color-gray-4)'}
+                strokeWidth={strokeWidth}
+            />
+            {/* Progress ring */}
+            <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={color}
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                transform={`rotate(-90 ${size / 2} ${size / 2})`}
+                style={{ 
+                    transition: 'stroke-dashoffset 0.5s ease-out',
+                    filter: `drop-shadow(0 0 12px ${color})`
+                }}
+            />
+        </svg>
+    );
+};
+
 export const TimerScreen: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -56,26 +100,21 @@ export const TimerScreen: React.FC = () => {
         }
 
         if (timerState === 'work') {
-            // After work, check if we need to switch sides or rest
             if (exercise?.isPaired && currentSide === 'left') {
-                // Switch to right side
                 setCurrentSide('right');
                 setTimerState('rest');
                 setTimeLeft(exercise.restTime);
                 setIsRunning(true);
             } else if (exercise?.isPaired && currentSide === 'right') {
-                // Completed both sides, move to rest before next set
                 setCurrentSide('left');
                 if (currentSet < (exercise?.sets || 0)) {
                     setTimerState('rest');
                     setTimeLeft(exercise.restTime);
                     setIsRunning(true);
                 } else {
-                    // All sets complete
                     completeExercise();
                 }
             } else {
-                // Not paired, just rest or complete
                 if (currentSet < (exercise?.sets || 0)) {
                     setTimerState('rest');
                     setTimeLeft(exercise!.restTime);
@@ -85,14 +124,11 @@ export const TimerScreen: React.FC = () => {
                 }
             }
         } else if (timerState === 'rest') {
-            // After rest, start next work period
             if (exercise?.isPaired && currentSide === 'left') {
-                // Already switched to left for next set
                 setCurrentSet(prev => prev + 1);
             } else if (!exercise?.isPaired) {
                 setCurrentSet(prev => prev + 1);
             }
-
             startWork();
         }
     };
@@ -137,121 +173,212 @@ export const TimerScreen: React.FC = () => {
 
     if (!exercise) return null;
 
+    const totalDuration = exercise.type === 'hold' ? (exercise.holdDuration || 30) : 100;
+    const workProgress = timerState === 'work' 
+        ? ((totalDuration - timeLeft) / totalDuration) * 100 
+        : 0;
+    const restProgress = timerState === 'rest' 
+        ? ((exercise.restTime - timeLeft) / exercise.restTime) * 100 
+        : 0;
+
+    const getTimerColor = () => {
+        if (timerState === 'work') return 'var(--color-exercise)';
+        if (timerState === 'rest') return 'var(--color-stand)';
+        return 'var(--color-accent)';
+    };
+
     return (
         <div className="timer-screen">
+            {/* Header */}
             <div className="timer-header">
-                <Button variant="ghost" onClick={() => navigate(-1)}>
-                    ← Back
-                </Button>
-                <h2>{exercise.name}</h2>
+                <button className="close-btn" onClick={() => navigate(-1)}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <div className="timer-header-info">
+                    <h2 className="timer-exercise-name">{exercise.name}</h2>
+                    <span className="timer-exercise-category">{exercise.category}</span>
+                </div>
+                <div className="header-spacer" />
             </div>
 
+            {/* Content */}
             <div className="timer-content">
+                
+                {/* Ready State */}
                 {timerState === 'ready' && (
-                    <div className="timer-ready fade-in">
-                        <div className="timer-display-large">Ready</div>
-                        <p className="timer-instructions">{exercise.instructions[0]}</p>
-                        <div className="timer-info">
-                            <div className="timer-info-item">
-                                <span className="label">Sets</span>
-                                <span className="value">{exercise.sets}</span>
-                            </div>
-                            <div className="timer-info-item">
-                                <span className="label">
-                                    {exercise.type === 'hold' ? 'Hold' : 'Reps'}
+                    <div className="timer-state timer-ready fade-in">
+                        <div className="ready-ring-container">
+                            <ProgressRing 
+                                progress={0} 
+                                size={280} 
+                                strokeWidth={20} 
+                                color="var(--color-exercise)"
+                            />
+                            <div className="ready-inner">
+                                <span className="ready-label">READY</span>
+                                <span className="ready-instruction">
+                                    {exercise.instructions[0]}
                                 </span>
-                                <span className="value">
-                                    {exercise.type === 'hold'
-                                        ? `${exercise.holdDuration}s`
-                                        : exercise.reps}
+                            </div>
+                        </div>
+
+                        <div className="ready-stats">
+                            <div className="ready-stat">
+                                <span className="ready-stat-value">{exercise.sets}</span>
+                                <span className="ready-stat-label">Sets</span>
+                            </div>
+                            <div className="ready-stat-divider" />
+                            <div className="ready-stat">
+                                <span className="ready-stat-value">
+                                    {exercise.type === 'hold' ? `${exercise.holdDuration}s` : exercise.reps}
+                                </span>
+                                <span className="ready-stat-label">
+                                    {exercise.type === 'hold' ? 'Hold' : 'Reps'}
                                 </span>
                             </div>
                             {exercise.isPaired && (
-                                <div className="timer-info-item">
-                                    <span className="label">Sides</span>
-                                    <span className="value">L + R</span>
-                                </div>
+                                <>
+                                    <div className="ready-stat-divider" />
+                                    <div className="ready-stat">
+                                        <span className="ready-stat-value">L+R</span>
+                                        <span className="ready-stat-label">Sides</span>
+                                    </div>
+                                </>
                             )}
                         </div>
+
                         <Button size="lg" fullWidth onClick={handleStart}>
-                            Start Exercise
+                            Start Workout
                         </Button>
                     </div>
                 )}
 
+                {/* Work State */}
                 {timerState === 'work' && (
-                    <div className="timer-active fade-in">
-                        <div className="timer-set-indicator">
-                            Set {currentSet} of {exercise.sets}
-                            {exercise.isPaired && ` (${currentSide === 'left' ? 'Left' : 'Right'} Side)`}
+                    <div className="timer-state timer-work fade-in">
+                        <div className="set-indicator">
+                            <span className="set-label">SET {currentSet} OF {exercise.sets}</span>
+                            {exercise.isPaired && (
+                                <span className={`side-indicator ${currentSide}`}>
+                                    {currentSide === 'left' ? 'Left Side' : 'Right Side'}
+                                </span>
+                            )}
                         </div>
 
-                        {exercise.type === 'hold' ? (
-                            <div className="timer-display-large timer-countdown">
-                                {formatTime(timeLeft)}
+                        <div className="work-ring-container">
+                            <ProgressRing 
+                                progress={workProgress} 
+                                size={300} 
+                                strokeWidth={24} 
+                                color={getTimerColor()}
+                            />
+                            <div className="work-inner">
+                                {exercise.type === 'hold' ? (
+                                    <>
+                                        <span className="timer-display">{formatTime(timeLeft)}</span>
+                                        <span className="timer-unit">remaining</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="rep-count">{exercise.reps}</span>
+                                        <span className="rep-label">reps</span>
+                                    </>
+                                )}
                             </div>
-                        ) : (
-                            <div className="timer-rep-counter">
-                                <div className="rep-text">Complete {exercise.reps} reps</div>
-                                <Button size="lg" fullWidth onClick={handleRepComplete}>
-                                    Done with Reps
-                                </Button>
-                            </div>
+                        </div>
+
+                        {exercise.type !== 'hold' && (
+                            <Button size="lg" fullWidth onClick={handleRepComplete}>
+                                Complete Reps
+                            </Button>
                         )}
-
-                        <div className="timer-progress-ring">
-                            <svg width="200" height="200">
-                                <circle
-                                    cx="100"
-                                    cy="100"
-                                    r="90"
-                                    fill="none"
-                                    stroke="var(--color-bg-tertiary)"
-                                    strokeWidth="12"
-                                />
-                                <circle
-                                    cx="100"
-                                    cy="100"
-                                    r="90"
-                                    fill="none"
-                                    stroke="var(--color-primary)"
-                                    strokeWidth="12"
-                                    strokeDasharray={`${2 * Math.PI * 90}`}
-                                    strokeDashoffset={
-                                        exercise.type === 'hold'
-                                            ? 2 * Math.PI * 90 * (1 - timeLeft / (exercise.holdDuration || 1))
-                                            : 0
-                                    }
-                                    transform="rotate(-90 100 100)"
-                                    style={{ transition: 'stroke-dashoffset 1s linear' }}
-                                />
-                            </svg>
-                        </div>
                     </div>
                 )}
 
+                {/* Rest State */}
                 {timerState === 'rest' && (
-                    <div className="timer-rest fade-in">
-                        <div className="timer-display-large">Rest</div>
-                        <div className="timer-countdown-large">{formatTime(timeLeft)}</div>
-                        <Button variant="secondary" onClick={handleSkipRest}>
+                    <div className="timer-state timer-rest fade-in">
+                        <div className="rest-header">
+                            <span className="rest-title">Rest</span>
+                            <span className="rest-next">
+                                {exercise.isPaired && currentSide === 'right' 
+                                    ? 'Right side next' 
+                                    : `Set ${Math.min(currentSet + 1, exercise.sets)} next`}
+                            </span>
+                        </div>
+
+                        <div className="rest-ring-container">
+                            <ProgressRing 
+                                progress={restProgress} 
+                                size={280} 
+                                strokeWidth={20} 
+                                color="var(--color-stand)"
+                            />
+                            <div className="rest-inner">
+                                <span className="timer-display">{formatTime(timeLeft)}</span>
+                            </div>
+                        </div>
+
+                        <Button variant="secondary" size="lg" fullWidth onClick={handleSkipRest}>
                             Skip Rest
                         </Button>
                     </div>
                 )}
 
+                {/* Complete State */}
                 {timerState === 'complete' && (
-                    <div className="timer-complete fade-in celebrate">
-                        <div className="complete-icon">🎉</div>
-                        <h2>Exercise Complete!</h2>
-                        <p>Great job! You completed all sets.</p>
+                    <div className="timer-state timer-complete fade-in">
+                        <div className="complete-celebration">
+                            <div className="complete-rings">
+                                <ProgressRing progress={100} size={200} strokeWidth={16} color="var(--color-move)" />
+                                <ProgressRing progress={100} size={160} strokeWidth={16} color="var(--color-exercise)" />
+                                <ProgressRing progress={100} size={120} strokeWidth={16} color="var(--color-stand)" />
+                            </div>
+                            <div className="complete-check">
+                                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                    <path 
+                                        d="M14 24l8 8 12-16" 
+                                        stroke="var(--color-accent-green)" 
+                                        strokeWidth="4" 
+                                        strokeLinecap="round" 
+                                        strokeLinejoin="round"
+                                        className="check-path"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div className="complete-text">
+                            <h2 className="complete-title">Workout Complete!</h2>
+                            <p className="complete-subtitle">Great job finishing {exercise.name}</p>
+                        </div>
+
+                        <div className="complete-stats">
+                            <div className="complete-stat">
+                                <span className="complete-stat-value">{exercise.sets}</span>
+                                <span className="complete-stat-label">Sets</span>
+                            </div>
+                            <div className="complete-stat">
+                                <span className="complete-stat-value">
+                                    {exercise.type === 'hold' 
+                                        ? `${(exercise.holdDuration || 0) * exercise.sets}s`
+                                        : (exercise.reps || 0) * exercise.sets}
+                                </span>
+                                <span className="complete-stat-label">
+                                    {exercise.type === 'hold' ? 'Total Time' : 'Total Reps'}
+                                </span>
+                            </div>
+                        </div>
+
                         <div className="complete-actions">
-                            <Button fullWidth variant="primary" onClick={() => navigate('/exercises')}>
-                                Back to Exercises
+                            <Button fullWidth variant="primary" size="lg" onClick={() => navigate('/exercises')}>
+                                Continue
                             </Button>
-                            <Button fullWidth variant="secondary" onClick={() => navigate('/')}>
-                                Go Home
-                            </Button>
+                            <button className="text-action" onClick={() => navigate('/')}>
+                                Back to Summary
+                            </button>
                         </div>
                     </div>
                 )}

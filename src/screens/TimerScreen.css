@@ -1,151 +1,423 @@
+/* Apple Fitness Timer Screen */
 .timer-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: var(--color-bg-primary);
-    padding-bottom: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  overflow: hidden;
 }
 
+/* Header */
 .timer-header {
-    padding: var(--spacing-4);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-4);
-    border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
-.timer-header h2 {
-    flex: 1;
-    margin: 0;
-    font-size: var(--font-size-xl);
+.close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-gray-5);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
+.close-btn:hover {
+  background: var(--color-gray-4);
+  color: var(--color-text-primary);
+}
+
+.timer-header-info {
+  flex: 1;
+  text-align: center;
+}
+
+.timer-exercise-name {
+  font-size: var(--font-size-headline);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.timer-exercise-category {
+  font-size: var(--font-size-caption1);
+  color: var(--color-text-secondary);
+}
+
+.header-spacer {
+  width: 36px;
+}
+
+/* Timer Content */
 .timer-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: var(--spacing-6);
-    text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  padding-bottom: var(--spacing-4xl);
 }
 
-.timer-ready,
-.timer-active,
-.timer-rest,
+.timer-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2xl);
+}
+
+/* Ready State */
+.timer-ready {
+  text-align: center;
+}
+
+.ready-ring-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ready-inner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  max-width: 180px;
+}
+
+.ready-label {
+  font-size: var(--font-size-caption1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-exercise);
+  letter-spacing: 0.1em;
+}
+
+.ready-instruction {
+  font-size: var(--font-size-subhead);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.ready-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: var(--color-background-elevated);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.ready-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ready-stat-value {
+  font-size: var(--font-size-title2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.ready-stat-label {
+  font-size: var(--font-size-caption1);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.ready-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--color-separator);
+}
+
+/* Work State */
+.timer-work {
+  text-align: center;
+}
+
+.set-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.set-label {
+  font-size: var(--font-size-caption1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.1em;
+}
+
+.side-indicator {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+}
+
+.side-indicator.left {
+  background: rgba(250, 17, 79, 0.2);
+  color: var(--color-move);
+}
+
+.side-indicator.right {
+  background: rgba(0, 212, 255, 0.2);
+  color: var(--color-stand);
+}
+
+.work-ring-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-inner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-display {
+  font-size: 72px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.timer-unit {
+  font-size: var(--font-size-subhead);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.rep-count {
+  font-size: 96px;
+  font-weight: var(--font-weight-heavy);
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.rep-label {
+  font-size: var(--font-size-title3);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Rest State */
+.timer-rest {
+  text-align: center;
+}
+
+.rest-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.rest-title {
+  font-size: var(--font-size-large-title);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-stand);
+}
+
+.rest-next {
+  font-size: var(--font-size-subhead);
+  color: var(--color-text-secondary);
+}
+
+.rest-ring-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rest-inner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Complete State */
 .timer-complete {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-6);
+  text-align: center;
 }
 
-.timer-display-large {
-    font-size: var(--font-size-4xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
+.complete-celebration {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.timer-countdown {
-    color: var(--color-text-primary);
+.complete-rings {
+  position: relative;
+  width: 200px;
+  height: 200px;
 }
 
-.timer-countdown-large {
-    font-size: 72px;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    font-variant-numeric: tabular-nums;
+.complete-rings .progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.timer-instructions {
-    font-size: var(--font-size-lg);
-    color: var(--color-text-secondary);
-    max-width: 300px;
+.complete-check {
+  position: absolute;
+  animation: checkPop 0.5s ease-out 0.3s both;
 }
 
-.timer-info {
-    display: flex;
-    gap: var(--spacing-6);
-    width: 100%;
-    justify-content: center;
+@keyframes checkPop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.timer-info-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-1);
+.check-path {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheck 0.5s ease-out 0.5s forwards;
 }
 
-.timer-info-item .label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    font-weight: var(--font-weight-semibold);
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.timer-info-item .value {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
+.complete-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
 }
 
-.timer-set-indicator {
-    font-size: var(--font-size-lg);
-    color: var(--color-text-secondary);
-    font-weight: var(--font-weight-semibold);
-    padding: var(--spacing-3) var(--spacing-6);
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-full);
+.complete-title {
+  font-size: var(--font-size-title1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
 }
 
-.timer-progress-ring {
-    position: relative;
-    width: 200px;
-    height: 200px;
+.complete-subtitle {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  margin: 0;
 }
 
-.timer-rep-counter {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4);
-    align-items: center;
+.complete-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-4xl);
 }
 
-.rep-text {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
+.complete-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
 }
 
-.complete-icon {
-    font-size: 80px;
+.complete-stat-value {
+  font-size: var(--font-size-large-title);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-green);
 }
 
-.timer-complete h2 {
-    color: var(--color-secondary);
-}
-
-.timer-complete p {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-lg);
+.complete-stat-label {
+  font-size: var(--font-size-caption1);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .complete-actions {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-3);
-    margin-top: var(--spacing-4);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: center;
 }
 
-@media (max-width: 480px) {
-    .timer-countdown-large {
-        font-size: 56px;
-    }
+.text-action {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+}
 
-    .timer-display-large {
-        font-size: var(--font-size-3xl);
-    }
+.text-action:hover {
+  opacity: 0.8;
+}
+
+/* Progress Ring Animation */
+.progress-ring circle {
+  transition: stroke-dashoffset 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-height: 700px) {
+  .timer-display {
+    font-size: 56px;
+  }
+  
+  .rep-count {
+    font-size: 72px;
+  }
+  
+  .work-ring-container svg,
+  .rest-ring-container svg,
+  .ready-ring-container svg {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 380px) {
+  .timer-display {
+    font-size: 48px;
+  }
+  
+  .rep-count {
+    font-size: 64px;
+  }
+  
+  .ready-stats {
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
 }
