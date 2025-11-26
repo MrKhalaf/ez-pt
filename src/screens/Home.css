@@ -1,152 +1,335 @@
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-3);
-    margin-bottom: var(--spacing-6);
+/* Apple Fitness Home Screen */
+.home-page {
+  background: var(--color-background);
 }
 
-.stat-card {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-5);
-    text-align: center;
-    transition: all var(--transition-base);
+.home-page .page-header {
+  padding-top: var(--spacing-2xl);
 }
 
-.stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+.header-date {
+  font-size: var(--font-size-caption1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
 }
 
-.stat-primary {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
-    border-color: rgba(239, 68, 68, 0.3);
+/* Activity Rings Card */
+.activity-card {
+  background: var(--color-background-elevated);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
 }
 
-.stat-secondary {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
-    border-color: rgba(16, 185, 129, 0.3);
+.activity-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
 }
 
-.stat-accent {
-    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(67, 56, 202, 0.05) 100%);
-    border-color: rgba(79, 70, 229, 0.3);
+.activity-label {
+  font-size: var(--font-size-title3);
+  font-weight: var(--font-weight-bold);
 }
 
-.stat-icon {
-    font-size: 32px;
-    margin-bottom: var(--spacing-2);
+.activity-date {
+  font-size: var(--font-size-subhead);
+  color: var(--color-text-secondary);
+}
+
+.activity-card-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+/* Triple Activity Rings */
+.triple-rings {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+.triple-rings .activity-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.activity-ring circle {
+  transform-origin: center;
+}
+
+/* Activity Stats */
+.activity-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.activity-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.stat-ring-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+}
+
+.stat-ring-indicator.move {
+  background: var(--color-move);
+  box-shadow: 0 0 8px var(--color-move);
+}
+
+.stat-ring-indicator.exercise {
+  background: var(--color-exercise);
+  box-shadow: 0 0 8px var(--color-exercise);
+}
+
+.stat-ring-indicator.stand {
+  background: var(--color-stand);
+  box-shadow: 0 0 8px var(--color-stand);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .stat-value {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    margin-bottom: var(--spacing-1);
+  font-size: var(--font-size-title2);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
 }
 
 .stat-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-caption1);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
-.section {
-    margin-bottom: var(--spacing-8);
+/* Category Scroll */
+.category-scroll {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--spacing-sm);
+  margin: 0 calc(-1 * var(--spacing-lg));
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
 }
 
-.section h2 {
-    margin-bottom: var(--spacing-4);
-    font-size: var(--font-size-xl);
+.category-scroll::-webkit-scrollbar {
+  display: none;
 }
 
-.categories-grid {
-    display: grid;
-    gap: var(--spacing-4);
-}
-
+/* Category Cards - Apple Fitness Style */
 .category-card {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-5);
-    transition: all var(--transition-base);
-    text-decoration: none;
-    display: block;
+  flex: 0 0 160px;
+  scroll-snap-align: start;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  aspect-ratio: 4/5;
+  transition: transform var(--transition-fast);
 }
 
 .category-card:hover {
-    transform: translateX(4px);
-    border-color: var(--color-primary);
-    box-shadow: var(--shadow-md);
+  transform: scale(1.02);
 }
 
-.category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-3);
+.category-card:active {
+  transform: scale(0.98);
 }
 
-.category-header h3 {
-    font-size: var(--font-size-lg);
-    color: var(--color-text-primary);
-    margin: 0;
+.category-card-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--category-color) 0%,
+    color-mix(in srgb, var(--category-color) 60%, black) 100%
+  );
+  opacity: 0.9;
+}
+
+.category-card-content {
+  position: relative;
+  height: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.category-icon {
+  font-size: 32px;
+  margin-bottom: auto;
+}
+
+.category-name {
+  font-size: var(--font-size-headline);
+  font-weight: var(--font-weight-bold);
+  color: #FFFFFF;
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.2;
+}
+
+.category-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .category-count {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-secondary);
-    padding: var(--spacing-1) var(--spacing-3);
-    border-radius: var(--radius-full);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-caption1);
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.category-progress {
-    display: flex;
+.category-progress-text {
+  font-size: var(--font-size-caption2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.category-progress-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+  margin-top: var(--spacing-sm);
+  overflow: hidden;
+}
+
+.category-progress-fill {
+  height: 100%;
+  background: #FFFFFF;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+/* Continue Cards */
+.continue-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-background-elevated);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.continue-card:hover {
+  background: var(--color-background-secondary);
+}
+
+.continue-card:active {
+  transform: scale(0.99);
+}
+
+.continue-card.completed {
+  opacity: 0.6;
+}
+
+.continue-info {
+  flex: 1;
+}
+
+.continue-name {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.continue-meta {
+  font-size: var(--font-size-caption1);
+  color: var(--color-text-secondary);
+}
+
+.continue-action {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 12px;
+  padding-left: 2px;
+}
+
+.completed-check {
+  width: 36px;
+  height: 36px;
+  background: var(--color-accent-green);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+}
+
+/* Responsive */
+@media (max-width: 380px) {
+  .activity-card-content {
+    flex-direction: column;
     align-items: center;
-    gap: var(--spacing-3);
+  }
+  
+  .activity-stats {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: var(--spacing-lg);
+  }
+  
+  .activity-stat {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: var(--font-size-title3);
+  }
+  
+  .category-card {
+    flex: 0 0 140px;
+  }
 }
 
-.progress-bar {
+@media (min-width: 768px) {
+  .category-scroll {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .category-card {
     flex: 1;
-    height: 8px;
-    background: var(--color-bg-tertiary);
-    border-radius: var(--radius-full);
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--color-secondary) 0%, var(--color-secondary-light) 100%);
-    border-radius: var(--radius-full);
-    transition: width var(--transition-slow);
-}
-
-.progress-text {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    font-weight: var(--font-weight-medium);
-    white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--spacing-2);
-    }
-
-    .stat-card {
-        padding: var(--spacing-3);
-    }
-
-    .stat-icon {
-        font-size: 24px;
-    }
-
-    .stat-value {
-        font-size: var(--font-size-lg);
-    }
+  }
 }
