@@ -1,91 +1,161 @@
+/* Apple Fitness Button Styles */
 .btn {
-    font-family: var(--font-family);
-    font-weight: var(--font-weight-semibold);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all var(--transition-base);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-2);
-    position: relative;
-    overflow: hidden;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-semibold);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.01em;
 }
 
 .btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .btn:active:not(:disabled) {
-    transform: scale(0.98);
+  transform: scale(0.97);
+  opacity: 0.9;
 }
 
 /* Sizes */
 .btn-sm {
-    padding: var(--spacing-2) var(--spacing-4);
-    font-size: var(--font-size-sm);
-    min-height: 36px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-footnote);
+  min-height: 32px;
+  border-radius: var(--radius-sm);
 }
 
 .btn-md {
-    padding: var(--spacing-3) var(--spacing-6);
-    font-size: var(--font-size-base);
-    min-height: 44px;
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-body);
+  min-height: 44px;
 }
 
 .btn-lg {
-    padding: var(--spacing-4) var(--spacing-8);
-    font-size: var(--font-size-lg);
-    min-height: 52px;
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: var(--font-size-body);
+  min-height: 52px;
+  border-radius: var(--radius-lg);
 }
 
 .btn-full-width {
-    width: 100%;
+  width: 100%;
 }
 
-/* Variants */
+/* Primary - Apple Fitness vibrant accent */
 .btn-primary {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    color: white;
-    box-shadow: var(--shadow-md);
+  background: var(--color-accent);
+  color: #FFFFFF;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: var(--color-primary-dark);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 
+/* Secondary - Filled gray button */
 .btn-secondary {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-border);
+  background: var(--color-gray-5);
+  color: var(--color-text-primary);
+}
+
+[data-theme="light"] .btn-secondary {
+  background: var(--color-gray-4);
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: var(--color-border);
-    border-color: var(--color-border-light);
+  background: var(--color-gray-4);
 }
 
+[data-theme="light"] .btn-secondary:hover:not(:disabled) {
+  background: var(--color-gray-3);
+}
+
+/* Danger */
 .btn-danger {
-    background: var(--color-danger);
-    color: white;
+  background: var(--color-accent-red);
+  color: #FFFFFF;
 }
 
 .btn-danger:hover:not(:disabled) {
-    background: #DC2626;
-    transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 
+/* Ghost - Transparent with accent text */
 .btn-ghost {
-    background: transparent;
-    color: var(--color-text-secondary);
-    border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-accent);
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .btn-ghost:hover:not(:disabled) {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-primary);
+  opacity: 0.7;
+}
+
+/* Activity Ring Button Variants */
+.btn-move {
+  background: var(--color-move);
+  color: #FFFFFF;
+}
+
+.btn-exercise {
+  background: var(--color-exercise);
+  color: #000000;
+}
+
+.btn-stand {
+  background: var(--color-stand);
+  color: #000000;
+}
+
+/* Tinted Button - Subtle background with accent text */
+.btn-tinted {
+  background: rgba(10, 132, 255, 0.15);
+  color: var(--color-accent);
+}
+
+[data-theme="light"] .btn-tinted {
+  background: rgba(0, 122, 255, 0.12);
+}
+
+.btn-tinted:hover:not(:disabled) {
+  background: rgba(10, 132, 255, 0.25);
+}
+
+/* Icon button */
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-background-secondary);
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: var(--color-gray-4);
+}
+
+/* Floating action style */
+.btn-floating {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Haptic press effect */
+@keyframes btn-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.btn-haptic:active {
+  animation: btn-press 150ms ease;
 }

@@ -1,62 +1,102 @@
+/* Apple Fitness Tab Bar */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--color-bg-secondary);
-    border-top: 1px solid var(--color-border);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: var(--spacing-2) 0;
-    z-index: var(--z-fixed);
-    backdrop-filter: blur(10px);
-    background: rgba(15, 23, 42, 0.95);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  height: 83px;
 }
 
-[data-theme="light"] .bottom-nav {
-    background: rgba(248, 250, 252, 0.95);
+.bottom-nav-blur {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 28, 30, 0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 0.5px solid var(--color-separator);
 }
 
-.bottom-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-1);
-    padding: var(--spacing-2) var(--spacing-4);
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: all var(--transition-base);
-    border-radius: var(--radius-md);
-    min-width: 60px;
+[data-theme="light"] .bottom-nav-blur {
+  background: rgba(249, 249, 249, 0.85);
 }
 
-.bottom-nav-item:hover {
-    color: var(--color-text-secondary);
-    background: var(--color-bg-tertiary);
+.bottom-nav-content {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: var(--spacing-sm);
+  height: 100%;
 }
 
-.bottom-nav-item.active {
-    color: var(--color-primary);
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  color: var(--color-gray-1);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  min-width: 64px;
 }
 
-.bottom-nav-icon {
-    font-size: 24px;
-    transition: transform var(--transition-base);
+.nav-item:hover {
+  color: var(--color-text-secondary);
 }
 
-.bottom-nav-item.active .bottom-nav-icon {
-    transform: scale(1.1);
+.nav-item.active {
+  color: var(--color-accent);
 }
 
-.bottom-nav-label {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.nav-icon svg {
+  width: 24px;
+  height: 24px;
+  transition: transform var(--transition-fast);
+}
+
+.nav-item.active .nav-icon svg {
+  transform: scale(1.05);
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0;
 }
 
 /* iOS Safe Area */
 @supports (padding: env(safe-area-inset-bottom)) {
-    .bottom-nav {
-        padding-bottom: calc(var(--spacing-2) + env(safe-area-inset-bottom));
-    }
+  .bottom-nav {
+    height: calc(83px + env(safe-area-inset-bottom));
+  }
+  
+  .bottom-nav-content {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Tablet/Desktop adjustments */
+@media (min-width: 768px) {
+  .bottom-nav {
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+  
+  .bottom-nav-blur {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    border-left: 0.5px solid var(--color-separator);
+    border-right: 0.5px solid var(--color-separator);
+  }
 }
