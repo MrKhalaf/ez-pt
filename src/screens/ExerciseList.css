@@ -8,6 +8,40 @@
   padding-bottom: var(--spacing-md);
 }
 
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.add-exercise-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-top: var(--spacing-sm);
+}
+
+.add-exercise-btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+.add-exercise-btn:active {
+  transform: scale(0.95);
+}
+
 .header-subtitle {
   font-size: var(--font-size-caption1);
   font-weight: var(--font-weight-semibold);

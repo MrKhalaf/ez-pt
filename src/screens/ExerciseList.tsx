@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useExercises } from '../context/ExerciseContext';
 import { useProgress } from '../context/ProgressContext';
 import './ExerciseList.css';
@@ -27,6 +27,7 @@ const getCategoryIcon = (category: string): string => {
 export const ExerciseList: React.FC = () => {
     const [searchParams] = useSearchParams();
     const category = searchParams.get('category');
+    const navigate = useNavigate();
 
     const { exercises } = useExercises();
     const { isExerciseCompleted, todayProgress } = useProgress();
@@ -55,8 +56,21 @@ export const ExerciseList: React.FC = () => {
     return (
         <div className="page exercise-page">
             <div className="page-header">
-                <span className="header-subtitle">WORKOUTS</span>
-                <h1>{category || 'All Exercises'}</h1>
+                <div className="header-row">
+                    <div className="header-text">
+                        <span className="header-subtitle">WORKOUTS</span>
+                        <h1>{category || 'All Exercises'}</h1>
+                    </div>
+                    <button 
+                        className="add-exercise-btn"
+                        onClick={() => navigate('/exercises/add')}
+                        aria-label="Add exercise"
+                    >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                    </button>
+                </div>
                 <p className="progress-summary">
                     {completedCount} of {totalCount} completed today
                 </p>

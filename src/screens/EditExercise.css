@@ -248,6 +248,35 @@
   padding-bottom: var(--spacing-xl);
 }
 
+/* Category Selector */
+.category-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.category-option {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-gray-5);
+  border: none;
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-footnote);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.category-option:hover {
+  background: var(--color-gray-4);
+}
+
+.category-option.active {
+  background: var(--color-accent);
+  color: #FFFFFF;
+}
+
 /* Responsive */
 @media (min-width: 768px) {
   .edit-form {

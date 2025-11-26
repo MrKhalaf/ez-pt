@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import './Settings.css';
 
@@ -157,8 +158,25 @@ export const Settings: React.FC = () => {
                     </div>
                 </section>
 
-                {/* About Section */}
+                {/* Data Management Section */}
                 <section className="settings-section fade-in stagger-3">
+                    <h2 className="settings-section-title">Data</h2>
+                    <div className="settings-group">
+                        <Link to="/exercises/add" className="settings-row settings-link">
+                            <div className="settings-row-icon">➕</div>
+                            <div className="settings-row-content">
+                                <span className="settings-row-label">Add New Exercise</span>
+                                <span className="settings-row-hint">Create a custom exercise</span>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="chevron-icon">
+                                <path d="M7 4l6 6-6 6"/>
+                            </svg>
+                        </Link>
+                    </div>
+                </section>
+
+                {/* About Section */}
+                <section className="settings-section fade-in stagger-4">
                     <h2 className="settings-section-title">About</h2>
                     <div className="about-card">
                         <div className="about-header">

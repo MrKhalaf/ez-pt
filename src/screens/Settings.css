@@ -76,6 +76,26 @@
   color: var(--color-text-secondary);
 }
 
+/* Settings Link Row */
+.settings-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.settings-link:hover {
+  background: var(--color-background-secondary);
+}
+
+.settings-link:active {
+  background: var(--color-gray-4);
+}
+
+.chevron-icon {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
 /* Theme Toggle Group */
 .theme-toggle-group {
   display: flex;
