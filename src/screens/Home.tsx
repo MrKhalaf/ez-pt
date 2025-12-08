@@ -84,7 +84,6 @@ export const Home: React.FC = () => {
 
     const mobilityProgress = getCategoryProgress('Mobility');
     const coreProgress = getCategoryProgress('Core Stability');
-    const lowerProgress = getCategoryProgress('Lower Body');
 
     // Get current date info
     const today = new Date();

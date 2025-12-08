@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0F172A"/>
+
+  <!-- Outer ring (Move - red/pink) -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#FA114F" stroke-width="32" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Middle ring (Exercise - green) -->
+  <circle cx="256" cy="256" r="130" fill="none" stroke="#92E82A" stroke-width="32" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Inner ring (Stand - cyan) -->
+  <circle cx="256" cy="256" r="80" fill="none" stroke="#00D4FF" stroke-width="32" stroke-linecap="round" opacity="0.9"/>
+</svg>
