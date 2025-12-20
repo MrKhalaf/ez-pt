@@ -277,6 +277,104 @@
   color: #FFFFFF;
 }
 
+/* Delete Button */
+.form-actions-danger {
+  margin-top: var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom));
+}
+
+.delete-exercise-btn {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-red);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.delete-exercise-btn:hover {
+  background: rgba(255, 69, 58, 0.1);
+}
+
+.delete-exercise-btn:active {
+  background: rgba(255, 69, 58, 0.2);
+}
+
+/* Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-xl);
+}
+
+.modal-content {
+  background: var(--color-background-elevated);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-content h2 {
+  font-size: var(--font-size-title3);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal-content p {
+  font-size: var(--font-size-subhead);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.4;
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.modal-btn {
+  flex: 1;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.modal-btn:active {
+  opacity: 0.8;
+}
+
+.modal-btn-cancel {
+  background: var(--color-gray-5);
+  color: var(--color-text-primary);
+}
+
+.modal-btn-delete {
+  background: var(--color-red);
+  color: #FFFFFF;
+}
+
 /* Responsive */
 @media (min-width: 768px) {
   .edit-form {

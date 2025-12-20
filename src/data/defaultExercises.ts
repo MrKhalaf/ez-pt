@@ -170,5 +170,107 @@ export const defaultExercises: Exercise[] = [
             'Switch sides after rest'
         ],
         notes: 'Essential for desk workers and anyone with tight hip flexors'
+    },
+
+    // Glute Activation
+    {
+        id: 10,
+        name: 'Side Plank Clamshell',
+        category: 'Lower Body',
+        type: 'hold',
+        sets: 5,
+        reps: 8,
+        holdDuration: 5,
+        restTime: 6,
+        isPaired: true,
+        instructions: [
+            'Lie on your side in a side plank position on your elbow',
+            'Bend knees at 90 degrees, feet stacked',
+            'Drive hips up toward the ceiling',
+            'Twist pelvis open slightly while lifting top knee',
+            'Hold for 5 seconds, maintaining hip height',
+            'Focus on engaging the down-side glutes'
+        ],
+        notes: 'Focus on the down-side glutes - keep hips lifted throughout'
+    },
+    {
+        id: 11,
+        name: 'Lock Clam',
+        category: 'Lower Body',
+        type: 'hold',
+        sets: 5,
+        reps: 15,
+        holdDuration: 3,
+        restTime: 6,
+        isPaired: true,
+        instructions: [
+            'Lie on your side with knees bent at 90 degrees',
+            'Keep feet together and locked in place',
+            'Lift top knee up while keeping feet touching',
+            'Hold at the top for 3 seconds',
+            'Lower with control and repeat'
+        ],
+        notes: 'See "best daily core routine (only 8 minutes)" video for demo'
+    },
+    {
+        id: 12,
+        name: 'Bridge with Band on Knees',
+        category: 'Lower Body',
+        type: 'hold',
+        sets: 5,
+        reps: 10,
+        holdDuration: 5,
+        restTime: 6,
+        isPaired: false,
+        equipmentNeeded: 'Resistance band',
+        instructions: [
+            'Lie on back with knees bent, feet flat on floor',
+            'Place resistance band around both knees',
+            'Push knees outward against the band',
+            'Lift hips toward ceiling, squeezing glutes',
+            'Hold at top for 5 seconds while maintaining knee pressure',
+            'Lower with control and repeat'
+        ],
+        notes: 'Keep pressing knees out against band throughout the movement'
+    },
+    {
+        id: 13,
+        name: 'Kickstand Squat with Band',
+        category: 'Lower Body',
+        type: 'rep',
+        sets: 2,
+        reps: 10,
+        restTime: 10,
+        isPaired: true,
+        equipmentNeeded: 'Resistance band',
+        instructions: [
+            'Stand with one foot forward, back foot on toes (kickstand position)',
+            'Place band around front thigh trying to pull knee inward',
+            'Hinge at hips like an RDL until you feel the glute activate',
+            'Once you feel the glute, transition into a squat',
+            'Push through front heel to stand',
+            'Only go through pain-free range of motion'
+        ],
+        notes: 'Think: RDL first, then squat once glute engages. Pain-free motion only.'
+    },
+    {
+        id: 14,
+        name: 'Squat with Band on Shins',
+        category: 'Lower Body',
+        type: 'rep',
+        sets: 3,
+        reps: 10,
+        restTime: 10,
+        isPaired: false,
+        equipmentNeeded: 'Resistance band',
+        instructions: [
+            'Stand with feet shoulder-width apart',
+            'Place resistance band around shins',
+            'Focus on full foot stability - tripod foot position',
+            'Push knees out against band as you squat down',
+            'Go to full depth if pain-free',
+            'Drive through heels to stand, maintaining outward knee pressure'
+        ],
+        notes: 'Focus on opening hips against band - full depth if pain-free'
     }
 ];

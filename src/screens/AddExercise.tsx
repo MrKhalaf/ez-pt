@@ -121,7 +121,21 @@ export const AddExercise: React.FC = () => {
                             <input
                                 type="checkbox"
                                 checked={exercise.isPaired}
-                                onChange={e => setExercise({ ...exercise, isPaired: e.target.checked })}
+                                onChange={e => {
+                                    const isPaired = e.target.checked;
+                                    if (isPaired) {
+                                        // Apply L+R exercise defaults
+                                        setExercise({
+                                            ...exercise,
+                                            isPaired: true,
+                                            sets: 5,
+                                            holdDuration: 13,
+                                            restTime: 6,
+                                        });
+                                    } else {
+                                        setExercise({ ...exercise, isPaired: false });
+                                    }
+                                }}
                             />
                             <span className="toggle-track">
                                 <span className="toggle-thumb" />

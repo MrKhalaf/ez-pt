@@ -8,9 +8,10 @@ import './EditExercise.css';
 export const EditExercise: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { getExerciseById, updateExercise } = useExercises();
+    const { getExerciseById, updateExercise, deleteExercise } = useExercises();
 
     const [exercise, setExercise] = useState<Exercise | null>(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -26,6 +27,13 @@ export const EditExercise: React.FC = () => {
     const handleSave = () => {
         if (exercise && id) {
             updateExercise(Number(id), exercise);
+            navigate('/exercises');
+        }
+    };
+
+    const handleDelete = () => {
+        if (id) {
+            deleteExercise(Number(id));
             navigate('/exercises');
         }
     };
@@ -187,8 +195,42 @@ export const EditExercise: React.FC = () => {
                         </Button>
                     </div>
 
+                    {/* Delete Button */}
+                    <div className="form-actions-danger">
+                        <button
+                            className="delete-exercise-btn"
+                            onClick={() => setShowDeleteConfirm(true)}
+                        >
+                            Remove Exercise
+                        </button>
+                    </div>
+
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteConfirm && (
+                <div className="modal-overlay" onClick={() => setShowDeleteConfirm(false)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <h2>Remove Exercise?</h2>
+                        <p>"{exercise.name}" will be removed from your exercises. This cannot be undone.</p>
+                        <div className="modal-actions">
+                            <button
+                                className="modal-btn modal-btn-cancel"
+                                onClick={() => setShowDeleteConfirm(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="modal-btn modal-btn-delete"
+                                onClick={handleDelete}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
