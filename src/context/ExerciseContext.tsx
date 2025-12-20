@@ -10,6 +10,7 @@ interface ExerciseContextType {
     deleteExercise: (id: number) => void;
     getExerciseById: (id: number) => Exercise | undefined;
     getExercisesByCategory: (category: string) => Exercise[];
+    syncNewDefaults: () => number; // Returns count of new exercises added
 }
 
 const ExerciseContext = createContext<ExerciseContextType | undefined>(undefined);
@@ -24,7 +25,17 @@ export const ExerciseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             exerciseStorage.save(defaultExercises);
             setExercises(defaultExercises);
         } else {
-            setExercises(stored);
+            // Auto-sync: Add any new default exercises that don't exist
+            const existingIds = new Set(stored.map(ex => ex.id));
+            const newDefaults = defaultExercises.filter(def => !existingIds.has(def.id));
+
+            if (newDefaults.length > 0) {
+                const merged = [...stored, ...newDefaults];
+                exerciseStorage.save(merged);
+                setExercises(merged);
+            } else {
+                setExercises(stored);
+            }
         }
     }, []);
 
@@ -56,6 +67,20 @@ export const ExerciseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return exercises.filter(ex => ex.category === category);
     };
 
+    const syncNewDefaults = () => {
+        // Add any default exercises that don't exist in current list
+        const existingIds = new Set(exercises.map(ex => ex.id));
+        const newExercises = defaultExercises.filter(def => !existingIds.has(def.id));
+
+        if (newExercises.length > 0) {
+            const updated = [...exercises, ...newExercises];
+            setExercises(updated);
+            exerciseStorage.save(updated);
+        }
+
+        return newExercises.length;
+    };
+
     return (
         <ExerciseContext.Provider value={{
             exercises,
@@ -63,7 +88,8 @@ export const ExerciseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             updateExercise,
             deleteExercise,
             getExerciseById,
-            getExercisesByCategory
+            getExercisesByCategory,
+            syncNewDefaults
         }}>
             {children}
         </ExerciseContext.Provider>
