@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rehabber-v1';
+const CACHE_NAME = 'rehabber-v2';
 const urlsToCache = [
   '/',
   '/index.html',
