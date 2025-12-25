@@ -139,6 +139,26 @@ export const Settings: React.FC = () => {
                         <div className="settings-divider" />
 
                         <div className="settings-row">
+                            <div className="settings-row-icon">🔔</div>
+                            <div className="settings-row-content">
+                                <span className="settings-row-label">Timer Sounds</span>
+                                <span className="settings-row-hint">Play sounds on state changes</span>
+                            </div>
+                            <label className="toggle-switch">
+                                <input
+                                    type="checkbox"
+                                    checked={settings.timerSound}
+                                    onChange={(e) => updateSettings({ timerSound: e.target.checked })}
+                                />
+                                <span className="toggle-track">
+                                    <span className="toggle-thumb" />
+                                </span>
+                            </label>
+                        </div>
+
+                        <div className="settings-divider" />
+
+                        <div className="settings-row">
                             <div className="settings-row-icon">📖</div>
                             <div className="settings-row-content">
                                 <span className="settings-row-label">Show Instructions</span>
