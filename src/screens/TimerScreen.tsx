@@ -4,7 +4,7 @@ import { useExercises } from '../context/ExerciseContext';
 import { useProgress } from '../context/ProgressContext';
 import { useTheme } from '../context/ThemeContext';
 import { Button } from '../components/Button';
-import { formatTime, haptics } from '../utils/helpers';
+import { formatTime, haptics, sounds } from '../utils/helpers';
 import './TimerScreen.css';
 
 type TimerState = 'ready' | 'work' | 'rest' | 'complete';
@@ -100,6 +100,11 @@ export const TimerScreen: React.FC = () => {
         }
 
         if (timerState === 'work') {
+            // Play complete sound when work period ends
+            if (settings.timerSound) {
+                sounds.complete();
+            }
+
             if (exercise?.isPaired && currentSide === 'left') {
                 setCurrentSide('right');
                 setTimerState('rest');
@@ -124,6 +129,11 @@ export const TimerScreen: React.FC = () => {
                 }
             }
         } else if (timerState === 'rest') {
+            // Play rest end sound before starting work
+            if (settings.timerSound) {
+                sounds.rest();
+            }
+
             if (exercise?.isPaired && currentSide === 'left') {
                 setCurrentSet(prev => prev + 1);
             } else if (!exercise?.isPaired) {
@@ -147,6 +157,10 @@ export const TimerScreen: React.FC = () => {
         if (settings.hapticFeedback) {
             haptics.medium();
         }
+
+        if (settings.timerSound) {
+            sounds.start();
+        }
     };
 
     const handleStart = () => {
@@ -164,6 +178,10 @@ export const TimerScreen: React.FC = () => {
 
         if (settings.hapticFeedback) {
             haptics.success();
+        }
+
+        if (settings.timerSound) {
+            sounds.success();
         }
     };
 
