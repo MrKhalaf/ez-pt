@@ -119,3 +119,6 @@ dist
 
 # macOS
 .DS_Store
+
+# Claude
+.claude/
