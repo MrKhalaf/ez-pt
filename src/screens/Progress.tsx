@@ -4,235 +4,150 @@ import { useExercises } from '../context/ExerciseContext';
 import { progressStorage } from '../utils/storage';
 import './Progress.css';
 
-// Activity Ring Component
-const ActivityRing: React.FC<{
-    progress: number;
-    size: number;
-    strokeWidth: number;
-    color: string;
-}> = ({ progress, size, strokeWidth, color }) => {
-    const radius = (size - strokeWidth) / 2;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (Math.min(progress, 100) / 100) * circumference;
-
-    return (
-        <svg width={size} height={size} className="activity-ring">
-            <circle
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                fill="none"
-                stroke={color}
-                strokeWidth={strokeWidth}
-                opacity={0.3}
-            />
-            <circle
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                fill="none"
-                stroke={color}
-                strokeWidth={strokeWidth}
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={offset}
-                transform={`rotate(-90 ${size / 2} ${size / 2})`}
-                style={{ transition: 'stroke-dashoffset 1s ease-out' }}
-            />
-        </svg>
-    );
-};
-
 export const Progress: React.FC = () => {
-    const { streak } = useProgress();
+    const { streak }    = useProgress();
     const { exercises } = useExercises();
 
     const last7Days = progressStorage.getLast7Days();
 
-    // Group by date
     const progressByDate: Record<string, number> = {};
-    last7Days.forEach(progress => {
-        progressByDate[progress.date] = (progressByDate[progress.date] || 0) + 1;
+    last7Days.forEach(p => {
+        progressByDate[p.date] = (progressByDate[p.date] || 0) + 1;
     });
 
-    // Generate last 7 days
-    const dates = [];
+    // Last 7 date strings
+    const dates: string[] = [];
     for (let i = 6; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        dates.push(date.toISOString().split('T')[0]);
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        dates.push(d.toISOString().split('T')[0]);
     }
 
-    const todayCompleted = progressByDate[dates[6]] || 0;
-    const completionRate = exercises.length > 0
+    const todayCompleted  = progressByDate[dates[6]] || 0;
+    const completionRate  = exercises.length > 0
         ? Math.round((todayCompleted / exercises.length) * 100)
         : 0;
+    const weeklyTotal     = dates.reduce((s, d) => s + (progressByDate[d] || 0), 0);
+    const weeklyAvg       = Math.round(weeklyTotal / 7);
+    const bestDay         = Math.max(...dates.map(d => progressByDate[d] || 0));
 
-    // Calculate weekly stats
-    const weeklyTotal = dates.reduce((sum, date) => sum + (progressByDate[date] || 0), 0);
-    const weeklyAverage = Math.round(weeklyTotal / 7);
-    const bestDay = Math.max(...dates.map(date => progressByDate[date] || 0));
-
-    // Get month and year
-    const today = new Date();
-    const monthYear = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const today    = new Date();
+    const dateStr  = today.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' });
+    const monthStr = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase();
 
     return (
         <div className="page progress-page">
-            <div className="page-header">
-                <span className="header-month">{monthYear.toUpperCase()}</span>
-                <h1>Activity</h1>
-            </div>
-
-            <div className="page-content">
-                {/* Today's Activity Card */}
-                <div className="activity-summary-card fade-in">
-                    <div className="summary-rings">
-                        <div className="summary-ring-stack">
-                            <ActivityRing progress={completionRate} size={140} strokeWidth={14} color="var(--color-move)" />
-                            <ActivityRing progress={streak * 10} size={110} strokeWidth={14} color="var(--color-exercise)" />
-                            <ActivityRing progress={weeklyAverage * 10} size={80} strokeWidth={14} color="var(--color-stand)" />
-                        </div>
+            {/* Header */}
+            <header className="progress-header">
+                <div className="progress-header-inner">
+                    <div className="progress-header-left">
+                        <span className="material-symbols-outlined">menu</span>
+                        <h1 className="progress-header-title">PT LOG {dateStr}</h1>
                     </div>
-                    <div className="summary-stats">
-                        <div className="summary-stat">
-                            <div className="stat-dot move" />
-                            <div className="stat-info">
-                                <span className="stat-value text-move">{todayCompleted}</span>
-                                <span className="stat-label">Today</span>
-                            </div>
-                        </div>
-                        <div className="summary-stat">
-                            <div className="stat-dot exercise" />
-                            <div className="stat-info">
-                                <span className="stat-value text-exercise">{streak}</span>
-                                <span className="stat-label">Streak</span>
-                            </div>
-                        </div>
-                        <div className="summary-stat">
-                            <div className="stat-dot stand" />
-                            <div className="stat-info">
-                                <span className="stat-value text-stand">{weeklyAverage}</span>
-                                <span className="stat-label">Avg/Day</span>
-                            </div>
-                        </div>
+                    <span className="progress-header-sub">{weeklyTotal} WK</span>
+                </div>
+            </header>
+
+            <main className="progress-main">
+                {/* Month label + title */}
+                <div className="progress-title-row fade-in">
+                    <p className="progress-month-label">{monthStr}</p>
+                    <h2 className="progress-page-title">Analytics</h2>
+                </div>
+
+                {/* Big stats row */}
+                <div className="progress-big-stats fade-in stagger-1">
+                    <div className="progress-big-stat">
+                        <span className="progress-big-num">{streak}</span>
+                        <span className="progress-big-label">Day Streak</span>
+                    </div>
+                    <div className="progress-stat-divider" />
+                    <div className="progress-big-stat">
+                        <span className="progress-big-num">{completionRate}%</span>
+                        <span className="progress-big-label">Today</span>
+                    </div>
+                    <div className="progress-stat-divider" />
+                    <div className="progress-big-stat">
+                        <span className="progress-big-num">{weeklyAvg}</span>
+                        <span className="progress-big-label">Avg / Day</span>
                     </div>
                 </div>
 
-                {/* Weekly Chart */}
-                <section className="section fade-in stagger-1">
-                    <div className="section-header">
-                        <h2 className="section-title">This Week</h2>
-                        <span className="section-meta">{weeklyTotal} total</span>
+                {/* Weekly bar chart */}
+                <section className="progress-section fade-in stagger-2">
+                    <div className="progress-section-header">
+                        <h3 className="progress-section-title">This Week</h3>
+                        <span className="progress-section-meta">{weeklyTotal} total</span>
                     </div>
 
-                    <div className="weekly-chart-card">
-                        <div className="chart-bars">
-                            {dates.map((date, index) => {
-                                const count = progressByDate[date] || 0;
-                                const percentage = exercises.length > 0
-                                    ? (count / exercises.length) * 100
-                                    : 0;
-                                const isToday = index === 6;
-                                const dayLabel = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+                    <div className="progress-chart">
+                        {dates.map((date, i) => {
+                            const count   = progressByDate[date] || 0;
+                            const pct     = exercises.length > 0
+                                ? Math.min((count / exercises.length) * 100, 100)
+                                : 0;
+                            const isToday = i === 6;
+                            const dayLbl  = new Date(date + 'T12:00:00')
+                                .toLocaleDateString('en-US', { weekday: 'short' })
+                                .charAt(0);
 
-                                return (
-                                    <div key={date} className={`chart-column ${isToday ? 'today' : ''}`}>
-                                        <div className="bar-wrapper">
-                                            <div 
-                                                className="bar"
-                                                style={{ 
-                                                    height: `${Math.max(percentage, 4)}%`,
-                                                    animationDelay: `${index * 50}ms`
-                                                }}
-                                            />
-                                        </div>
-                                        <span className="day-label">{dayLabel.charAt(0)}</span>
-                                        <span className="day-count">{count > 0 ? count : '–'}</span>
+                            return (
+                                <div key={date} className={`chart-col ${isToday ? 'is-today' : ''}`}>
+                                    <div className="chart-bar-wrap">
+                                        <div
+                                            className="chart-bar"
+                                            style={{
+                                                height: `${Math.max(pct, 4)}%`,
+                                                animationDelay: `${i * 50}ms`
+                                            }}
+                                        />
                                     </div>
-                                );
-                            })}
-                        </div>
+                                    <span className="chart-day">{dayLbl}</span>
+                                    <span className="chart-count">{count > 0 ? count : '–'}</span>
+                                </div>
+                            );
+                        })}
                     </div>
                 </section>
 
-                {/* Stats Grid */}
-                <section className="section fade-in stagger-2">
-                    <div className="section-header">
-                        <h2 className="section-title">Highlights</h2>
+                {/* Highlights grid */}
+                <section className="progress-section fade-in stagger-3">
+                    <div className="progress-section-header">
+                        <h3 className="progress-section-title">Highlights</h3>
                     </div>
 
                     <div className="highlights-grid">
-                        <div className="highlight-card">
-                            <div className="highlight-icon">🔥</div>
-                            <div className="highlight-info">
-                                <span className="highlight-value">{streak}</span>
-                                <span className="highlight-label">Day Streak</span>
+                        {[
+                            { num: streak,        label: 'Day Streak',   hint: streak >= 7 ? 'Amazing!' : streak >= 3 ? 'Keep going!' : 'Build it up!' },
+                            { num: bestDay,        label: 'Best Day',     hint: 'This week' },
+                            { num: `${completionRate}%`, label: "Today's Rate", hint: completionRate >= 100 ? 'Complete!' : completionRate >= 50 ? 'Halfway!' : 'Get started!' },
+                            { num: weeklyTotal,    label: 'This Week',    hint: `${exercises.length * 7} goal` },
+                        ].map((h, i) => (
+                            <div key={i} className="highlight-card">
+                                <span className="highlight-num">{h.num}</span>
+                                <span className="highlight-label">{h.label.toUpperCase()}</span>
+                                <span className="highlight-hint">{h.hint}</span>
                             </div>
-                            <div className="highlight-detail">
-                                {streak >= 7 ? 'Amazing!' : streak >= 3 ? 'Keep going!' : 'Build it up!'}
-                            </div>
-                        </div>
-
-                        <div className="highlight-card">
-                            <div className="highlight-icon">🏆</div>
-                            <div className="highlight-info">
-                                <span className="highlight-value">{bestDay}</span>
-                                <span className="highlight-label">Best Day</span>
-                            </div>
-                            <div className="highlight-detail">This week</div>
-                        </div>
-
-                        <div className="highlight-card">
-                            <div className="highlight-icon">📊</div>
-                            <div className="highlight-info">
-                                <span className="highlight-value">{completionRate}%</span>
-                                <span className="highlight-label">Today's Rate</span>
-                            </div>
-                            <div className="highlight-detail">
-                                {completionRate >= 100 ? 'Complete!' : completionRate >= 50 ? 'Halfway!' : 'Get started!'}
-                            </div>
-                        </div>
-
-                        <div className="highlight-card">
-                            <div className="highlight-icon">⭐</div>
-                            <div className="highlight-info">
-                                <span className="highlight-value">{weeklyTotal}</span>
-                                <span className="highlight-label">This Week</span>
-                            </div>
-                            <div className="highlight-detail">{exercises.length * 7} goal</div>
-                        </div>
+                        ))}
                     </div>
                 </section>
 
-                {/* Motivation Card */}
-                <section className="section fade-in stagger-3">
-                    <div className="motivation-card">
-                        <div className="motivation-bg" />
-                        <div className="motivation-content">
-                            {streak >= 7 ? (
-                                <>
-                                    <span className="motivation-emoji">🏆</span>
-                                    <h3>You're crushing it!</h3>
-                                    <p>A week-long streak is incredible. Your consistency is paying off!</p>
-                                </>
-                            ) : streak >= 3 ? (
-                                <>
-                                    <span className="motivation-emoji">⚡</span>
-                                    <h3>Great momentum!</h3>
-                                    <p>You're building a strong habit. Keep the energy going!</p>
-                                </>
-                            ) : (
-                                <>
-                                    <span className="motivation-emoji">💪</span>
-                                    <h3>Every rep counts</h3>
-                                    <p>Recovery is a journey. Show up for yourself today!</p>
-                                </>
-                            )}
-                        </div>
+                {/* Motivation */}
+                <section className="progress-section fade-in stagger-4">
+                    <div className="motivation-block">
+                        <span className="motivation-label">
+                            {streak >= 7 ? "You're crushing it" : streak >= 3 ? 'Great momentum' : 'Every rep counts'}
+                        </span>
+                        <p className="motivation-text">
+                            {streak >= 7
+                                ? 'A week-long streak is incredible. Your consistency is paying off.'
+                                : streak >= 3
+                                ? "You're building a strong habit. Keep the energy going."
+                                : 'Recovery is a journey. Show up for yourself today.'}
+                        </p>
                     </div>
                 </section>
-            </div>
+            </main>
         </div>
     );
 };

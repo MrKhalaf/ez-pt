@@ -1,316 +1,264 @@
-/* Apple Fitness Progress Screen */
+/* PT LOG — Progress / Analytics Screen */
+
 .progress-page {
-  background: var(--color-background);
+    background: var(--color-surface);
 }
 
-.progress-page .page-header {
-  padding-top: var(--spacing-2xl);
+/* ── Header ── */
+.progress-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-surface);
 }
 
-.header-month {
-  font-size: var(--font-size-caption1);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-secondary);
-  letter-spacing: 0.02em;
+.progress-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    height: var(--header-height);
 }
 
-/* Activity Summary Card */
-.activity-summary-card {
-  background: var(--color-background-elevated);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-xl);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-2xl);
+.progress-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #000;
 }
 
-.summary-rings {
-  flex-shrink: 0;
+.progress-header-title {
+    font-size: 1.125rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: #000;
 }
 
-.summary-ring-stack {
-  position: relative;
-  width: 140px;
-  height: 140px;
+.progress-header-sub {
+    font-size: 1.125rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #000;
 }
 
-.summary-ring-stack .activity-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* ── Main ── */
+.progress-main {
+    padding: 1.5rem 1.5rem;
+    padding-bottom: calc(var(--nav-height) + 2rem);
 }
 
-.summary-stats {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+/* Title */
+.progress-title-row {
+    margin-bottom: 3rem;
 }
 
-.summary-stat {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
+.progress-month-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-on-surface-variant);
+    margin-bottom: 0.4rem;
 }
 
-.stat-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-full);
+.progress-page-title {
+    font-size: clamp(2.25rem, 9vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: #000;
+    line-height: 1;
 }
 
-.stat-dot.move {
-  background: var(--color-move);
-  box-shadow: 0 0 8px var(--color-move);
+/* Big stats row */
+.progress-big-stats {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-surface-container-high);
+    border-bottom: 1px solid var(--color-surface-container-high);
 }
 
-.stat-dot.exercise {
-  background: var(--color-exercise);
-  box-shadow: 0 0 8px var(--color-exercise);
+.progress-big-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-.stat-dot.stand {
-  background: var(--color-stand);
-  box-shadow: 0 0 8px var(--color-stand);
+.progress-big-num {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: #000;
+    line-height: 1;
+    display: block;
 }
 
-.stat-info {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-sm);
+.progress-big-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-on-surface-variant);
+    margin-top: 0.35rem;
+    display: block;
 }
 
-.stat-value {
-  font-size: var(--font-size-title2);
-  font-weight: var(--font-weight-bold);
-  line-height: 1;
+.progress-stat-divider {
+    width: 1px;
+    height: 3rem;
+    background: var(--color-surface-container-high);
 }
 
-.stat-label {
-  font-size: var(--font-size-caption1);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+/* ── Section ── */
+.progress-section {
+    margin-bottom: 3rem;
 }
 
-/* Section Header */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: var(--spacing-md);
+.progress-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
 }
 
-.section-title {
-  font-size: var(--font-size-title3);
-  font-weight: var(--font-weight-bold);
+.progress-section-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #000;
 }
 
-.section-meta {
-  font-size: var(--font-size-subhead);
-  color: var(--color-text-secondary);
+.progress-section-meta {
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-on-surface-variant);
 }
 
-/* Weekly Chart */
-.weekly-chart-card {
-  background: var(--color-background-elevated);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl) var(--spacing-lg);
+/* ── Bar Chart ── */
+.progress-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.25rem;
+    height: 120px;
 }
 
-.chart-bars {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  height: 140px;
-  gap: var(--spacing-sm);
+.chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
 }
 
-.chart-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
-  max-width: 40px;
+.chart-col.is-today .chart-bar {
+    background: #000;
 }
 
-.bar-wrapper {
-  width: 100%;
-  height: 100px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+.chart-bar-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 2px;
 }
 
-.bar {
-  width: 100%;
-  max-width: 24px;
-  background: linear-gradient(180deg, var(--color-accent) 0%, color-mix(in srgb, var(--color-accent) 60%, transparent) 100%);
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  min-height: 4px;
-  animation: barGrow 0.6s ease-out both;
+.chart-bar {
+    width: 100%;
+    background: var(--color-surface-container-high);
+    transition: height 0.6s ease-out;
+    animation: fadeIn 400ms ease-out both;
+    min-height: 3px;
 }
 
-@keyframes barGrow {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.chart-day {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    margin-top: 0.4rem;
 }
 
-.chart-column.today .bar {
-  background: linear-gradient(180deg, var(--color-exercise) 0%, color-mix(in srgb, var(--color-exercise) 60%, transparent) 100%);
+.chart-count {
+    font-size: 0.5625rem;
+    font-weight: 500;
+    color: var(--color-on-surface-variant);
+    margin-top: 0.15rem;
 }
 
-.day-label {
-  font-size: var(--font-size-caption2);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-tertiary);
+.chart-col.is-today .chart-day,
+.chart-col.is-today .chart-count {
+    color: #000;
+    font-weight: 900;
 }
 
-.chart-column.today .day-label {
-  color: var(--color-exercise);
-}
-
-.day-count {
-  font-size: var(--font-size-caption1);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
-}
-
-.chart-column.today .day-count {
-  color: var(--color-text-primary);
-  font-weight: var(--font-weight-bold);
-}
-
-/* Highlights Grid */
+/* ── Highlights ── */
 .highlights-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-md);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--color-surface-container-high);
+    border: 1px solid var(--color-surface-container-high);
 }
 
 .highlight-card {
-  background: var(--color-background-elevated);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
+    background: var(--color-surface);
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
-.highlight-icon {
-  font-size: 28px;
-}
-
-.highlight-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.highlight-value {
-  font-size: var(--font-size-title1);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  line-height: 1;
+.highlight-num {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: #000;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+    display: block;
 }
 
 .highlight-label {
-  font-size: var(--font-size-caption1);
-  color: var(--color-text-secondary);
-  margin-top: 2px;
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-on-surface-variant);
+    display: block;
 }
 
-.highlight-detail {
-  font-size: var(--font-size-caption2);
-  color: var(--color-text-tertiary);
+.highlight-hint {
+    font-size: 0.6875rem;
+    color: var(--color-secondary);
+    margin-top: 0.25rem;
+    display: block;
 }
 
-/* Motivation Card */
-.motivation-card {
-  position: relative;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  padding: var(--spacing-2xl);
+/* ── Motivation ── */
+.motivation-block {
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-surface-container-high);
 }
 
-.motivation-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    var(--color-accent) 0%,
-    var(--color-accent-purple) 100%
-  );
-  opacity: 0.15;
+.motivation-label {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #000;
+    display: block;
+    margin-bottom: 0.75rem;
 }
 
-.motivation-content {
-  position: relative;
-  text-align: center;
-}
-
-.motivation-emoji {
-  font-size: 48px;
-  display: block;
-  margin-bottom: var(--spacing-md);
-}
-
-.motivation-card h3 {
-  font-size: var(--font-size-title2);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  margin: 0 0 var(--spacing-sm) 0;
-}
-
-.motivation-card p {
-  font-size: var(--font-size-body);
-  color: var(--color-text-secondary);
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* Responsive */
-@media (max-width: 380px) {
-  .activity-summary-card {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .summary-stats {
-    flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
-  }
-  
-  .summary-stat {
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-  
-  .stat-info {
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-  
-  .stat-value {
-    font-size: var(--font-size-title3);
-  }
-  
-  .highlights-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (min-width: 768px) {
-  .highlights-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.motivation-text {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--color-secondary);
+    line-height: 1.5;
+    max-width: 26rem;
 }
