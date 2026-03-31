@@ -1,161 +1,74 @@
-/* Apple Fitness Button Styles */
+/* PT LOG Buttons — Editorial Brutalist */
 .btn {
-  font-family: var(--font-family);
-  font-weight: var(--font-weight-semibold);
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-family);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+    border-radius: 0;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(0.97);
-  opacity: 0.9;
+    transform: scale(0.98);
 }
 
 /* Sizes */
-.btn-sm {
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-footnote);
-  min-height: 32px;
-  border-radius: var(--radius-sm);
-}
+.btn-sm  { font-size: 0.625rem;  padding: 0.75rem 1.25rem; min-height: 2.5rem; }
+.btn-md  { font-size: 0.6875rem; padding: 1rem 1.5rem;     min-height: 3rem;   }
+.btn-lg  { font-size: 0.6875rem; padding: 1.375rem 2rem;   min-height: 3.5rem; }
 
-.btn-md {
-  padding: var(--spacing-md) var(--spacing-xl);
-  font-size: var(--font-size-body);
-  min-height: 44px;
-}
+.btn-full-width { width: 100%; }
 
-.btn-lg {
-  padding: var(--spacing-lg) var(--spacing-2xl);
-  font-size: var(--font-size-body);
-  min-height: 52px;
-  border-radius: var(--radius-lg);
-}
-
-.btn-full-width {
-  width: 100%;
-}
-
-/* Primary - Apple Fitness vibrant accent */
+/* Primary — solid black */
 .btn-primary {
-  background: var(--color-accent);
-  color: #FFFFFF;
+    background: #000000;
+    color: #ffffff;
 }
+.btn-primary:hover:not(:disabled)  { background: #1a1a1a; }
 
-.btn-primary:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
-/* Secondary - Filled gray button */
+/* Secondary — ghost with border */
 .btn-secondary {
-  background: var(--color-gray-5);
-  color: var(--color-text-primary);
+    background: transparent;
+    color: #000000;
+    border: 2px solid #000000;
 }
+.btn-secondary:hover:not(:disabled) { background: rgba(0,0,0,0.04); }
 
-[data-theme="light"] .btn-secondary {
-  background: var(--color-gray-4);
+/* Ghost — text only */
+.btn-ghost {
+    background: transparent;
+    color: #000000;
+    padding-left: 0;
+    padding-right: 0;
+    letter-spacing: 0.1em;
 }
-
-.btn-secondary:hover:not(:disabled) {
-  background: var(--color-gray-4);
-}
-
-[data-theme="light"] .btn-secondary:hover:not(:disabled) {
-  background: var(--color-gray-3);
-}
+.btn-ghost:hover:not(:disabled) { opacity: 0.6; }
 
 /* Danger */
 .btn-danger {
-  background: var(--color-accent-red);
-  color: #FFFFFF;
+    background: transparent;
+    color: #ba1a1a;
+    border: 2px solid #ba1a1a;
 }
+.btn-danger:hover:not(:disabled) { background: #ba1a1a; color: #ffffff; }
 
-.btn-danger:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
-/* Ghost - Transparent with accent text */
-.btn-ghost {
-  background: transparent;
-  color: var(--color-accent);
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.btn-ghost:hover:not(:disabled) {
-  opacity: 0.7;
-}
-
-/* Activity Ring Button Variants */
-.btn-move {
-  background: var(--color-move);
-  color: #FFFFFF;
-}
-
-.btn-exercise {
-  background: var(--color-exercise);
-  color: #000000;
-}
-
-.btn-stand {
-  background: var(--color-stand);
-  color: #000000;
-}
-
-/* Tinted Button - Subtle background with accent text */
+/* Tinted */
 .btn-tinted {
-  background: rgba(10, 132, 255, 0.15);
-  color: var(--color-accent);
+    background: var(--color-surface-container-low);
+    color: #000000;
 }
-
-[data-theme="light"] .btn-tinted {
-  background: rgba(0, 122, 255, 0.12);
-}
-
-.btn-tinted:hover:not(:disabled) {
-  background: rgba(10, 132, 255, 0.25);
-}
-
-/* Icon button */
-.btn-icon {
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
-  padding: 0;
-  border-radius: var(--radius-full);
-  background: var(--color-background-secondary);
-}
-
-.btn-icon:hover:not(:disabled) {
-  background: var(--color-gray-4);
-}
-
-/* Floating action style */
-.btn-floating {
-  box-shadow: var(--shadow-lg);
-}
-
-/* Haptic press effect */
-@keyframes btn-press {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.95); }
-  100% { transform: scale(1); }
-}
-
-.btn-haptic:active {
-  animation: btn-press 150ms ease;
-}
+.btn-tinted:hover:not(:disabled) { background: var(--color-surface-container); }

@@ -1,102 +1,60 @@
-/* Apple Fitness Tab Bar */
+/* PT LOG Bottom Nav */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: var(--z-sticky);
-  height: 83px;
-}
-
-.bottom-nav-blur {
-  position: absolute;
-  inset: 0;
-  background: rgba(28, 28, 30, 0.85);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-top: 0.5px solid var(--color-separator);
-}
-
-[data-theme="light"] .bottom-nav-blur {
-  background: rgba(249, 249, 249, 0.85);
-}
-
-.bottom-nav-content {
-  position: relative;
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  padding-top: var(--spacing-sm);
-  height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 0 1rem;
+    height: var(--nav-height);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: var(--spacing-xs) var(--spacing-md);
-  color: var(--color-gray-1);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-  min-width: 64px;
-}
-
-.nav-item:hover {
-  color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.75rem;
+    min-width: 60px;
+    flex: 1;
+    color: #9ca3af;
+    border-top: 2px solid transparent;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+    text-decoration: none;
 }
 
 .nav-item.active {
-  color: var(--color-accent);
+    color: #000000;
+    border-top-color: #000000;
+}
+
+.nav-item:hover:not(.active) {
+    color: #374151;
 }
 
 .nav-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-}
-
-.nav-icon svg {
-  width: 24px;
-  height: 24px;
-  transition: transform var(--transition-fast);
-}
-
-.nav-item.active .nav-icon svg {
-  transform: scale(1.05);
+    font-size: 24px;
+    display: block;
+    margin-bottom: 0.25rem;
 }
 
 .nav-label {
-  font-size: 10px;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0;
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1;
 }
 
-/* iOS Safe Area */
-@supports (padding: env(safe-area-inset-bottom)) {
-  .bottom-nav {
-    height: calc(83px + env(safe-area-inset-bottom));
-  }
-  
-  .bottom-nav-content {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
-
-/* Tablet/Desktop adjustments */
-@media (min-width: 768px) {
-  .bottom-nav {
-    max-width: 500px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  }
-  
-  .bottom-nav-blur {
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    border-left: 0.5px solid var(--color-separator);
-    border-right: 0.5px solid var(--color-separator);
-  }
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .bottom-nav {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+    }
 }
