@@ -1,5 +1,3 @@
-// Haptic feedback using Vibration API
-// Note: Vibration API requires user gesture and may not work on all devices (e.g., iOS)
 export const haptics = {
     light: () => {
         if ('vibrate' in navigator) {
@@ -32,7 +30,6 @@ export const haptics = {
     }
 };
 
-// Audio context for sound effects (lazy initialized)
 let audioContext: AudioContext | null = null;
 
 const getAudioContext = (): AudioContext | null => {
@@ -43,129 +40,57 @@ const getAudioContext = (): AudioContext | null => {
             return null;
         }
     }
+    // Resume if browser suspended the context during inactivity
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
     return audioContext;
 };
 
-// Sound effects using Web Audio API
-export const sounds = {
-    // Light click/tap sound
-    tap: () => {
-        const ctx = getAudioContext();
-        if (!ctx) return;
+const playTone = (
+    freq: number,
+    duration: number,
+    volume: number,
+    offset = 0,
+    freqRamp?: number,
+): void => {
+    const ctx = getAudioContext();
+    if (!ctx) return;
 
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
 
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-
-        oscillator.frequency.value = 1200;
-        oscillator.type = 'sine';
-
-        gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.08);
-    },
-
-    // Start/begin sound - ascending tone
-    start: () => {
-        const ctx = getAudioContext();
-        if (!ctx) return;
-
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-
-        oscillator.frequency.setValueAtTime(600, ctx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
-        oscillator.type = 'sine';
-
-        gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.15);
-    },
-
-    // Timer complete - pleasant double beep
-    complete: () => {
-        const ctx = getAudioContext();
-        if (!ctx) return;
-
-        // First beep
-        const osc1 = ctx.createOscillator();
-        const gain1 = ctx.createGain();
-        osc1.connect(gain1);
-        gain1.connect(ctx.destination);
-
-        osc1.frequency.value = 880;
-        osc1.type = 'sine';
-        gain1.gain.setValueAtTime(0.12, ctx.currentTime);
-        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-        osc1.start(ctx.currentTime);
-        osc1.stop(ctx.currentTime + 0.12);
-
-        // Second beep (higher)
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
-
-        osc2.frequency.value = 1100;
-        osc2.type = 'sine';
-        gain2.gain.setValueAtTime(0.12, ctx.currentTime + 0.15);
-        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.27);
-        osc2.start(ctx.currentTime + 0.15);
-        osc2.stop(ctx.currentTime + 0.27);
-    },
-
-    // Success/celebration - ascending triple tone
-    success: () => {
-        const ctx = getAudioContext();
-        if (!ctx) return;
-
-        const frequencies = [700, 880, 1100];
-
-        frequencies.forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            const startTime = ctx.currentTime + i * 0.12;
-            osc.frequency.value = freq;
-            osc.type = 'sine';
-            gain.gain.setValueAtTime(0.1, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.15);
-            osc.start(startTime);
-            osc.stop(startTime + 0.15);
-        });
-    },
-
-    // Rest period - soft low tone
-    rest: () => {
-        const ctx = getAudioContext();
-        if (!ctx) return;
-
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-
-        oscillator.frequency.value = 440;
-        oscillator.type = 'sine';
-
-        gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.2);
+    const start = ctx.currentTime + offset;
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, start);
+    if (freqRamp) {
+        osc.frequency.exponentialRampToValueAtTime(freqRamp, start + duration);
     }
+
+    gain.gain.setValueAtTime(volume, start);
+    gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+
+    osc.start(start);
+    osc.stop(start + duration);
+};
+
+export const sounds = {
+    tap: () => playTone(1200, 0.08, 0.1),
+
+    start: () => playTone(600, 0.15, 0.15, 0, 900),
+
+    complete: () => {
+        playTone(880, 0.12, 0.12);
+        playTone(1100, 0.12, 0.12, 0.15);
+    },
+
+    success: () => {
+        [700, 880, 1100].forEach((freq, i) => playTone(freq, 0.15, 0.1, i * 0.12));
+    },
+
+    rest: () => playTone(440, 0.2, 0.08),
 };
 
 // Format time (seconds to MM:SS)

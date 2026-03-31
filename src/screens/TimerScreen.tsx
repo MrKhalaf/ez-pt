@@ -100,7 +100,6 @@ export const TimerScreen: React.FC = () => {
         }
 
         if (timerState === 'work') {
-            // Play complete sound when work period ends
             if (settings.timerSound) {
                 sounds.complete();
             }
@@ -129,7 +128,6 @@ export const TimerScreen: React.FC = () => {
                 }
             }
         } else if (timerState === 'rest') {
-            // Play rest end sound before starting work
             if (settings.timerSound) {
                 sounds.rest();
             }
@@ -161,10 +159,6 @@ export const TimerScreen: React.FC = () => {
         if (settings.timerSound) {
             sounds.start();
         }
-    };
-
-    const handleStart = () => {
-        startWork();
     };
 
     const handleSkipRest = () => {
@@ -267,7 +261,7 @@ export const TimerScreen: React.FC = () => {
                             )}
                         </div>
 
-                        <Button size="lg" fullWidth onClick={handleStart}>
+                        <Button size="lg" fullWidth onClick={startWork}>
                             Start Workout
                         </Button>
                     </div>
