@@ -1,140 +1,47 @@
-/* Apple Fitness Design System */
-@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800;900&display=swap');
+/* PT LOG — Editorial Brutalist Design System */
 
 :root {
-  /* Apple Fitness Colors - Dark Mode Default */
-  --color-background: #000000;
-  --color-background-elevated: #1C1C1E;
-  --color-background-secondary: #2C2C2E;
-  --color-background-tertiary: #3A3A3C;
-  
-  /* Activity Ring Colors */
-  --color-move: #FA114F;
-  --color-exercise: #92E82A;
-  --color-stand: #00D4FF;
-  
-  /* Accent Colors */
-  --color-accent: #0A84FF;
-  --color-accent-green: #30D158;
-  --color-accent-orange: #FF9F0A;
-  --color-accent-red: #FF453A;
-  --color-accent-purple: #BF5AF2;
-  --color-accent-pink: #FF375F;
-  --color-accent-yellow: #FFD60A;
-  
-  /* Text Colors */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: rgba(255, 255, 255, 0.7);
-  --color-text-tertiary: rgba(255, 255, 255, 0.55);
-  --color-text-quaternary: rgba(255, 255, 255, 0.3);
-  
-  /* Separator Colors */
-  --color-separator: rgba(255, 255, 255, 0.1);
-  --color-separator-opaque: #38383A;
-  
-  /* System Gray Scale */
-  --color-gray-1: #8E8E93;
-  --color-gray-2: #636366;
-  --color-gray-3: #48484A;
-  --color-gray-4: #3A3A3C;
-  --color-gray-5: #2C2C2E;
-  --color-gray-6: #1C1C1E;
-  
-  /* Typography - SF Pro */
-  --font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
-  
-  /* Font Sizes */
-  --font-size-caption2: 11px;
-  --font-size-caption1: 12px;
-  --font-size-footnote: 13px;
-  --font-size-subhead: 15px;
-  --font-size-body: 17px;
-  --font-size-headline: 17px;
-  --font-size-title3: 20px;
-  --font-size-title2: 22px;
-  --font-size-title1: 28px;
-  --font-size-large-title: 34px;
-  
-  /* Font Weights */
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --font-weight-heavy: 800;
-  --font-weight-black: 900;
-  
-  /* Spacing */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 16px;
-  --spacing-xl: 20px;
-  --spacing-2xl: 24px;
-  --spacing-3xl: 32px;
-  --spacing-4xl: 40px;
-  
-  /* Border Radius - Apple Style */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
-  
-  /* Shadows - Subtle for dark mode */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-  
+  /* Core Colors */
+  --color-primary: #000000;
+  --color-surface: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f3f4;
+  --color-surface-container: #eeeeee;
+  --color-surface-container-high: #e8e8e8;
+  --color-surface-container-highest: #e2e2e2;
+  --color-on-surface: #1a1c1c;
+  --color-on-surface-variant: #474747;
+  --color-secondary: #5e5e5e;
+  --color-outline: #777777;
+  --color-outline-variant: #c6c6c6;
+
+  /* Completion / Success */
+  --color-tertiary: #00460e;
+  --color-tertiary-container: #358438;
+
+  /* Font */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Nav / Header heights */
+  --nav-height: 80px;
+  --header-height: 64px;
+
   /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-spring: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  
-  /* Z-index */
-  --z-base: 1;
-  --z-elevated: 10;
-  --z-sticky: 100;
-  --z-modal: 1000;
-  --z-toast: 2000;
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
 }
 
-/* Light Mode */
-[data-theme="light"] {
-  --color-background: #F2F2F7;
-  --color-background-elevated: #FFFFFF;
-  --color-background-secondary: #FFFFFF;
-  --color-background-tertiary: #E5E5EA;
-  
-  --color-text-primary: #000000;
-  --color-text-secondary: rgba(0, 0, 0, 0.6);
-  --color-text-tertiary: rgba(0, 0, 0, 0.45);
-  --color-text-quaternary: rgba(0, 0, 0, 0.25);
-  
-  --color-separator: rgba(0, 0, 0, 0.1);
-  --color-separator-opaque: #C6C6C8;
-  
-  --color-gray-1: #8E8E93;
-  --color-gray-2: #AEAEB2;
-  --color-gray-3: #C7C7CC;
-  --color-gray-4: #D1D1D6;
-  --color-gray-5: #E5E5EA;
-  --color-gray-6: #F2F2F7;
-  
-  --color-accent: #007AFF;
-  --color-accent-green: #34C759;
-  --color-accent-orange: #FF9500;
-  --color-accent-red: #FF3B30;
-  
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 24px;
+  line-height: 1;
+  vertical-align: middle;
+  user-select: none;
+  display: inline-block;
 }
 
-/* Reset & Base Styles */
+/* Reset */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -147,19 +54,14 @@ html {
 }
 
 body {
-  height: 100%;
   font-family: var(--font-family);
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.47;
-  letter-spacing: -0.022em;
-  color: var(--color-text-primary);
-  background-color: var(--color-background);
+  font-size: 0.875rem;
+  color: var(--color-on-surface);
+  background: var(--color-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  
-  /* iOS optimizations */
+  min-height: max(884px, 100dvh);
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   touch-action: manipulation;
@@ -171,277 +73,72 @@ body {
   flex-direction: column;
 }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--font-weight-bold);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  color: var(--color-text-primary);
-}
-
-.large-title {
-  font-size: var(--font-size-large-title);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.007em;
-}
-
-.title1 {
-  font-size: var(--font-size-title1);
-  font-weight: var(--font-weight-bold);
-}
-
-.title2 {
-  font-size: var(--font-size-title2);
-  font-weight: var(--font-weight-bold);
-}
-
-.title3 {
-  font-size: var(--font-size-title3);
-  font-weight: var(--font-weight-semibold);
-}
-
-.headline {
-  font-size: var(--font-size-headline);
-  font-weight: var(--font-weight-semibold);
-}
-
-.body {
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-regular);
-}
-
-.callout {
-  font-size: 16px;
-  font-weight: var(--font-weight-regular);
-}
-
-.subhead {
-  font-size: var(--font-size-subhead);
-  font-weight: var(--font-weight-regular);
-}
-
-.footnote {
-  font-size: var(--font-size-footnote);
-  font-weight: var(--font-weight-regular);
-}
-
-.caption1 {
-  font-size: var(--font-size-caption1);
-  font-weight: var(--font-weight-regular);
-}
-
-.caption2 {
-  font-size: var(--font-size-caption2);
-  font-weight: var(--font-weight-regular);
-}
-
-/* Links */
 a {
-  color: var(--color-accent);
   text-decoration: none;
-  transition: opacity var(--transition-fast);
+  color: inherit;
 }
 
-a:hover {
-  opacity: 0.8;
+button {
+  font-family: var(--font-family);
+  cursor: pointer;
+  border: none;
+  background: none;
 }
 
-/* Page Layout - Apple Fitness Style */
+/* App wrapper */
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-background);
+  background: var(--color-surface);
 }
 
+/* Page base */
 .page {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-bottom: 90px;
-  overflow-x: hidden;
+  padding-bottom: var(--nav-height);
+  min-height: 100vh;
+  background: var(--color-surface);
 }
-
-.page-header {
-  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-md);
-  position: sticky;
-  top: 0;
-  z-index: var(--z-sticky);
-  background: var(--color-background);
-}
-
-.page-header h1 {
-  font-size: var(--font-size-large-title);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-xs);
-}
-
-.page-header .subtitle {
-  font-size: var(--font-size-subhead);
-  color: var(--color-text-secondary);
-}
-
-.page-content {
-  flex: 1;
-  padding: 0 var(--spacing-lg) var(--spacing-lg);
-}
-
-/* Section Headers - Apple Style */
-.section {
-  margin-bottom: var(--spacing-3xl);
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-md);
-}
-
-.section-title {
-  font-size: var(--font-size-title3);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-}
-
-.section-action {
-  font-size: var(--font-size-body);
-  color: var(--color-accent);
-  font-weight: var(--font-weight-regular);
-}
-
-/* Cards - Apple Fitness Style */
-.card {
-  background: var(--color-background-elevated);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
-}
-
-.card:hover {
-  transform: scale(1.01);
-}
-
-.card-sm {
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-}
-
-.card-lg {
-  padding: var(--spacing-xl);
-  border-radius: var(--radius-xl);
-}
-
-/* Utility Classes */
-.text-primary { color: var(--color-text-primary); }
-.text-secondary { color: var(--color-text-secondary); }
-.text-tertiary { color: var(--color-text-tertiary); }
-.text-accent { color: var(--color-accent); }
-.text-move { color: var(--color-move); }
-.text-exercise { color: var(--color-exercise); }
-.text-stand { color: var(--color-stand); }
-
-.bg-elevated { background: var(--color-background-elevated); }
-.bg-secondary { background: var(--color-background-secondary); }
-
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-xs { gap: var(--spacing-xs); }
-.gap-sm { gap: var(--spacing-sm); }
-.gap-md { gap: var(--spacing-md); }
-.gap-lg { gap: var(--spacing-lg); }
-.gap-xl { gap: var(--spacing-xl); }
-
-.text-center { text-align: center; }
-.font-medium { font-weight: var(--font-weight-medium); }
-.font-semibold { font-weight: var(--font-weight-semibold); }
-.font-bold { font-weight: var(--font-weight-bold); }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
+@keyframes countIn {
+  from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+.fade-in { animation: fadeIn 250ms ease-out both; }
+.slide-up { animation: slideUp 300ms ease-out both; }
+
+/* Stagger delays */
+.stagger-1 { animation-delay: 60ms; }
+.stagger-2 { animation-delay: 120ms; }
+.stagger-3 { animation-delay: 180ms; }
+.stagger-4 { animation-delay: 240ms; }
+.stagger-5 { animation-delay: 300ms; }
+
+/* Focus states */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
-@keyframes ringProgress {
-  from { stroke-dashoffset: var(--ring-circumference); }
-  to { stroke-dashoffset: var(--ring-offset); }
-}
-
-@keyframes celebrate {
-  0% { transform: scale(1) rotate(0deg); }
-  25% { transform: scale(1.1) rotate(3deg); }
-  50% { transform: scale(1.15) rotate(-3deg); }
-  75% { transform: scale(1.1) rotate(3deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-.fade-in {
-  animation: fadeIn var(--transition-base) ease-out;
-}
-
-.scale-in {
-  animation: scaleIn var(--transition-base) ease-out;
-}
-
-.slide-up {
-  animation: slideUp var(--transition-slow) ease-out;
-}
-
-.celebrate {
-  animation: celebrate 0.6s ease;
-}
-
-/* Staggered animation delays */
-.stagger-1 { animation-delay: 50ms; }
-.stagger-2 { animation-delay: 100ms; }
-.stagger-3 { animation-delay: 150ms; }
-.stagger-4 { animation-delay: 200ms; }
-.stagger-5 { animation-delay: 250ms; }
-.stagger-6 { animation-delay: 300ms; }
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-gray-3);
-  border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-2);
-}
-
-/* Touch Optimizations */
+/* Touch */
 button, a, [role="button"] {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  user-select: none;
 }
 
 input, textarea, select {
@@ -451,46 +148,21 @@ input, textarea, select {
   font-family: var(--font-family);
 }
 
-/* iOS Safe Area */
-@supports (padding: env(safe-area-inset-top)) {
-  body {
-    padding-top: env(safe-area-inset-top);
-  }
-  
+/* iOS safe area */
+@supports (padding: env(safe-area-inset-bottom)) {
   .page {
-    padding-bottom: calc(90px + env(safe-area-inset-bottom));
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
   }
 }
 
-/* Loading skeleton */
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-gray-5) 25%,
-    var(--color-gray-4) 50%,
-    var(--color-gray-5) 75%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
-  border-radius: var(--radius-sm);
-}
-
-@keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Focus states for accessibility */
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
+/* Scrollbar hidden */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
