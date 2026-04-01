@@ -369,10 +369,60 @@
     transition: width 0.5s ease-out;
 }
 
-/* Responsive */
+/* ── Responsive ── */
+
+/* Short mobile screens */
 @media (max-height: 680px) {
-    .timer-digits     { font-size: 4rem; }
-    .timer-rep-count  { font-size: 6rem; }
+    .timer-digits        { font-size: 4rem; }
+    .timer-rep-count     { font-size: 6rem; }
     .timer-exercise-name { font-size: 2rem; }
     .timer-title-section { margin-bottom: 1.5rem; }
+    .timer-display-section { margin-bottom: 1rem; }
+}
+
+/* Web / wider screens — constrain width, compress vertical rhythm */
+@media (min-width: 640px) {
+    .timer-screen {
+        max-width: 520px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .timer-header-inner {
+        padding: 0 2rem;
+    }
+
+    .timer-main {
+        padding: 1.5rem 2rem 2rem;
+        /* Don't stretch to fill excess height on tall desktop viewports */
+        flex: none;
+        display: block;
+    }
+
+    .timer-state {
+        display: block;
+    }
+
+    .timer-title-section {
+        margin-bottom: 1.75rem;
+    }
+
+    .timer-display-section {
+        flex: none;
+        margin-bottom: 1.5rem;
+    }
+
+    .timer-ready-content {
+        flex: none;
+        margin-bottom: 1.5rem;
+        min-height: 4rem;
+    }
+
+    .timer-actions {
+        margin-top: 2rem;
+    }
+
+    .timer-complete-stats {
+        margin-bottom: 2.5rem;
+    }
 }
