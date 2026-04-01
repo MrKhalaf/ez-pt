@@ -2,6 +2,15 @@ import { Exercise, ExerciseProgress } from '../models/Exercise';
 import { Settings, defaultSettings } from '../models/Settings';
 import { DailyProgress } from '../models/Progress';
 
+/** Day rolls over at 4 AM local time — activity before 4 AM counts as the previous day. */
+export const DAY_CUTOFF_HOURS = 4;
+
+export const getEffectiveNow = (): Date =>
+    new Date(Date.now() - DAY_CUTOFF_HOURS * 60 * 60 * 1000);
+
+export const getEffectiveDate = (): string =>
+    getEffectiveNow().toISOString().split('T')[0];
+
 const STORAGE_KEYS = {
     EXERCISES: 'rehabber_exercises',
     PROGRESS: 'rehabber_progress',
@@ -81,7 +90,7 @@ export const progressStorage = {
 
     addProgress: (exerciseId: number, completedSets: number): void => {
         const progress = progressStorage.getAll();
-        const today = new Date().toISOString().split('T')[0];
+        const today = getEffectiveDate();
 
         const existing = progress.find(
             p => p.exerciseId === exerciseId && p.date === today
@@ -104,7 +113,7 @@ export const progressStorage = {
 
     getTodayProgress: (): ExerciseProgress[] => {
         const progress = progressStorage.getAll();
-        const today = new Date().toISOString().split('T')[0];
+        const today = getEffectiveDate();
         return progress.filter(p => p.date === today);
     },
 
@@ -115,9 +124,9 @@ export const progressStorage = {
 
     getLast7Days: (): ExerciseProgress[] => {
         const progress = progressStorage.getAll();
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-        const cutoffDate = sevenDaysAgo.toISOString().split('T')[0];
+        const shifted = getEffectiveNow();
+        shifted.setDate(shifted.getDate() - 7);
+        const cutoffDate = shifted.toISOString().split('T')[0];
 
         return progress.filter(p => p.date >= cutoffDate);
     }
@@ -133,7 +142,7 @@ export const dailyProgressStorage = {
 
     updateToday: (update: Partial<DailyProgress>): void => {
         const allProgress = dailyProgressStorage.getAll();
-        const today = new Date().toISOString().split('T')[0];
+        const today = getEffectiveDate();
 
         const todayIndex = allProgress.findIndex(p => p.date === today);
 
@@ -155,7 +164,7 @@ export const dailyProgressStorage = {
 
     getToday: (): DailyProgress | null => {
         const allProgress = dailyProgressStorage.getAll();
-        const today = new Date().toISOString().split('T')[0];
+        const today = getEffectiveDate();
         return allProgress.find(p => p.date === today) || null;
     }
 };
@@ -189,7 +198,7 @@ export const calculateStreak = (): number => {
     const sorted = allProgress.sort((a, b) => b.date.localeCompare(a.date));
 
     let streak = 0;
-    let currentDate = new Date();
+    let currentDate = getEffectiveNow();
 
     for (const progress of sorted) {
         const progressDate = progress.date;

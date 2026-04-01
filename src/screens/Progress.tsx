@@ -1,7 +1,8 @@
 import React from 'react';
 import { useProgress } from '../context/ProgressContext';
 import { useExercises } from '../context/ExerciseContext';
-import { progressStorage } from '../utils/storage';
+import { progressStorage, getEffectiveNow, DAY_CUTOFF_HOURS } from '../utils/storage';
+import { calculateCompletionRate } from '../utils/helpers';
 import './Progress.css';
 
 export const Progress: React.FC = () => {
@@ -15,18 +16,16 @@ export const Progress: React.FC = () => {
         progressByDate[p.date] = (progressByDate[p.date] || 0) + 1;
     });
 
-    // Last 7 date strings
+    const effectiveNow = getEffectiveNow();
     const dates: string[] = [];
     for (let i = 6; i >= 0; i--) {
-        const d = new Date();
+        const d = new Date(effectiveNow);
         d.setDate(d.getDate() - i);
         dates.push(d.toISOString().split('T')[0]);
     }
 
     const todayCompleted  = progressByDate[dates[6]] || 0;
-    const completionRate  = exercises.length > 0
-        ? Math.round((todayCompleted / exercises.length) * 100)
-        : 0;
+    const completionRate  = calculateCompletionRate(todayCompleted, exercises.length);
     const weeklyTotal     = dates.reduce((s, d) => s + (progressByDate[d] || 0), 0);
     const weeklyAvg       = Math.round(weeklyTotal / 7);
     const bestDay         = Math.max(...dates.map(d => progressByDate[d] || 0));
@@ -147,6 +146,8 @@ export const Progress: React.FC = () => {
                         </p>
                     </div>
                 </section>
+
+                <p className="progress-cutoff-note">Day resets at {DAY_CUTOFF_HOURS}:00 AM</p>
             </main>
         </div>
     );

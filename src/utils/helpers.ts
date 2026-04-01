@@ -110,10 +110,6 @@ export const formatDate = (date: Date | string): string => {
     });
 };
 
-// Get today's date in YYYY-MM-DD format
-export const getTodayString = (): string => {
-    return new Date().toISOString().split('T')[0];
-};
 
 // Check if it's time for daily reset (default 4AM)
 export const shouldResetDaily = (lastResetTime: string, resetHour: number = 4): boolean => {

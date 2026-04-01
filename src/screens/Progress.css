@@ -262,3 +262,14 @@
     line-height: 1.5;
     max-width: 26rem;
 }
+
+/* Day cutoff note */
+.progress-cutoff-note {
+    text-align: center;
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--color-outline-variant);
+    letter-spacing: 0.05em;
+    margin-top: 2rem;
+    padding-bottom: 1rem;
+}
