@@ -38,6 +38,15 @@ export const TimerScreen: React.FC = () => {
     const [timeLeft, setTimeLeft]       = useState(0);
     const [isRunning, setIsRunning]     = useState(false);
 
+    // Reset all state when navigating to a different exercise (same component reused by router)
+    useEffect(() => {
+        setTimerState('ready');
+        setCurrentSet(1);
+        setCurrentSide(exercise?.isPaired ? 'left' : 'both');
+        setTimeLeft(0);
+        setIsRunning(false);
+    }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+
     useEffect(() => {
         if (!exercise) navigate('/exercises');
     }, [exercise, navigate]);
