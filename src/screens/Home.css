@@ -129,6 +129,118 @@
     color: #000;
 }
 
+/* ── Edit mode ── */
+
+.session-item--edit {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border-bottom: 1px solid var(--color-surface-container-high);
+    animation: fadeIn 300ms ease-out both;
+}
+.session-item--edit:last-child { border-bottom: none; }
+
+.session-item-edit-body {
+    flex: 1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 1.75rem 0;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+.session-item-edit-body:active { opacity: 0.6; }
+
+.session-edit-chevron {
+    font-size: 20px;
+    color: var(--color-on-surface-variant);
+    flex-shrink: 0;
+}
+
+.session-delete-btn {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: #ba1a1a;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: opacity var(--transition-fast);
+}
+.session-delete-btn:hover { opacity: 0.7; }
+.session-delete-btn--disabled {
+    color: var(--color-on-surface-variant);
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Add session */
+.session-add-row {
+    padding: 1.5rem 0 0.5rem;
+}
+
+.session-add-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity var(--transition-fast);
+}
+.session-add-btn:hover { opacity: 0.6; }
+
+.session-add-icon {
+    font-size: 20px;
+    color: var(--color-on-surface-variant);
+}
+
+.session-add-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-on-surface-variant);
+}
+
+.session-add-input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.session-add-input {
+    font-family: var(--font-family);
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #000;
+    background: none;
+    border: none;
+    border-bottom: 2px solid #000;
+    outline: none;
+    width: 100%;
+    padding: 0.25rem 0;
+    line-height: 1;
+}
+.session-add-input::placeholder {
+    color: var(--color-outline-variant);
+    font-weight: 400;
+}
+
+.session-add-hint {
+    font-size: 0.5625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-on-surface-variant);
+}
+
 /* ── Footer stats ── */
 .home-divider {
     width: 100%;
