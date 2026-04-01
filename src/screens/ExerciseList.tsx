@@ -7,9 +7,10 @@ import './ExerciseList.css';
 export const ExerciseList: React.FC = () => {
     const [searchParams] = useSearchParams();
     const category       = searchParams.get('category');
+    const isEditMode     = searchParams.get('edit') === 'true';
     const navigate       = useNavigate();
 
-    const { exercises }                              = useExercises();
+    const { exercises, categories }                  = useExercises();
     const { isExerciseCompleted, todayProgress }     = useProgress();
 
     const filteredExercises = category
@@ -29,7 +30,6 @@ export const ExerciseList: React.FC = () => {
         !isExerciseCompleted(ex.id, ex.sets)
     )?.id ?? null;
 
-    const categories = ['Mobility', 'Core Stability', 'Lower Body', 'Upper Body'];
 
     return (
         <div className="page exercise-page">
@@ -37,19 +37,41 @@ export const ExerciseList: React.FC = () => {
             <header className="exercise-header">
                 <div className="exercise-header-inner">
                     <div className="exercise-header-left">
-                        <button className="ex-back-btn" onClick={() => navigate(-1)}>
+                        <button
+                            className="ex-back-btn"
+                            onClick={() => {
+                                if (isEditMode && category) {
+                                    navigate('/exercises?edit=true');
+                                } else {
+                                    navigate(-1);
+                                }
+                            }}
+                        >
                             <span className="material-symbols-outlined">arrow_back</span>
                         </button>
-                        <h1 className="exercise-header-title">PT LOG {dateStr}</h1>
+                        <h1 className="exercise-header-title">
+                            {isEditMode ? 'Manage' : `PT LOG ${dateStr}`}
+                        </h1>
                     </div>
-                    <span className="exercise-header-count">{completedCount}/{totalCount}</span>
+                    {isEditMode ? (
+                        <button
+                            className="ex-edit-done-btn"
+                            onClick={() => navigate('/')}
+                        >
+                            Done
+                        </button>
+                    ) : (
+                        <span className="exercise-header-count">{completedCount}/{totalCount}</span>
+                    )}
                 </div>
             </header>
 
             <main className="exercise-main">
                 {/* Session name */}
                 <div className="exercise-session-row fade-in">
-                    <p className="exercise-session-label">Current Session</p>
+                    <p className="exercise-session-label">
+                        {isEditMode ? 'Editing Session' : 'Current Session'}
+                    </p>
                     <h2 className="exercise-session-name">
                         {(category || 'All Exercises').toUpperCase()}
                     </h2>
@@ -58,15 +80,17 @@ export const ExerciseList: React.FC = () => {
                 {/* Category filter chips */}
                 {!category && (
                     <div className="ex-filter-row">
-                        {['All', ...categories].map(cat => (
-                            <Link
-                                key={cat}
-                                to={cat === 'All' ? '/exercises' : `/exercises?category=${encodeURIComponent(cat)}`}
-                                className="ex-chip"
-                            >
-                                {cat}
-                            </Link>
-                        ))}
+                        {['All', ...categories].map(cat => {
+                            const editSuffix = isEditMode ? '&edit=true' : '';
+                            const to = cat === 'All'
+                                ? `/exercises${isEditMode ? '?edit=true' : ''}`
+                                : `/exercises?category=${encodeURIComponent(cat)}${editSuffix}`;
+                            return (
+                                <Link key={cat} to={to} className="ex-chip">
+                                    {cat}
+                                </Link>
+                            );
+                        })}
                     </div>
                 )}
 
@@ -82,16 +106,20 @@ export const ExerciseList: React.FC = () => {
                             ? `${exercise.holdDuration}S HOLD`
                             : `${exercise.reps} REPS`;
 
+                        const destination = isEditMode
+                            ? `/exercises/edit/${exercise.id}`
+                            : `/timer/${exercise.id}`;
+
                         return (
                             <Link
                                 key={exercise.id}
-                                to={`/timer/${exercise.id}`}
-                                className={`ex-item ${completed ? 'is-done' : ''} ${incomplete ? 'is-inactive' : ''}`}
+                                to={destination}
+                                className={`ex-item ${!isEditMode && completed ? 'is-done' : ''} ${!isEditMode && incomplete ? 'is-inactive' : ''} ${isEditMode ? 'is-edit' : ''}`}
                                 style={{ animationDelay: `${i * 35}ms` }}
                             >
                                 <div className="ex-item-body">
-                                    {/* Status row */}
-                                    {completed && (
+                                    {/* Status row — hidden in edit mode */}
+                                    {!isEditMode && completed && (
                                         <div className="ex-status ex-status--done">
                                             <span
                                                 className="material-symbols-outlined ex-status-icon"
@@ -102,7 +130,7 @@ export const ExerciseList: React.FC = () => {
                                             <span className="ex-status-label">Completed</span>
                                         </div>
                                     )}
-                                    {inProgress && (
+                                    {!isEditMode && inProgress && (
                                         <div className="ex-status ex-status--active">
                                             <span className="ex-status-dot" />
                                             <span className="ex-status-label">In Progress</span>
@@ -111,19 +139,25 @@ export const ExerciseList: React.FC = () => {
 
                                     <h3 className="ex-name">{exercise.name.toUpperCase()}</h3>
                                     <p className="ex-meta">
-                                        {doneSets} / {exercise.sets} SETS&nbsp;&bull;&nbsp;{metaStr}
-                                        {exercise.isPaired ? '\u00a0\u2022\u00a0L + R' : ''}
+                                        {isEditMode
+                                            ? `${exercise.sets} SETS\u00a0\u2022\u00a0${metaStr}${exercise.isPaired ? '\u00a0\u2022\u00a0L + R' : ''}`
+                                            : `${doneSets} / ${exercise.sets} SETS\u00a0\u2022\u00a0${metaStr}${exercise.isPaired ? '\u00a0\u2022\u00a0L + R' : ''}`
+                                        }
                                     </p>
                                 </div>
 
-                                {/* Trailing chevron only for inactive/incomplete items */}
-                                {incomplete && (
-                                    <div className="ex-item-trailing">
+                                {/* Trailing icon */}
+                                <div className="ex-item-trailing">
+                                    {isEditMode ? (
+                                        <span className="material-symbols-outlined ex-edit-icon">
+                                            edit
+                                        </span>
+                                    ) : incomplete ? (
                                         <span className="material-symbols-outlined ex-play-icon">
                                             chevron_right
                                         </span>
-                                    </div>
-                                )}
+                                    ) : null}
+                                </div>
                             </Link>
                         );
                     })}
@@ -137,8 +171,15 @@ export const ExerciseList: React.FC = () => {
                 </div>
             </main>
 
-            {/* Add FAB */}
-            <button className="ex-fab" onClick={() => navigate('/exercises/add')} aria-label="Add exercise">
+            {/* Add FAB — always visible, routes to add with category pre-filled */}
+            <button
+                className="ex-fab"
+                onClick={() => navigate(category
+                    ? `/exercises/add?category=${encodeURIComponent(category)}`
+                    : '/exercises/add'
+                )}
+                aria-label="Add exercise"
+            >
                 <span className="material-symbols-outlined">add</span>
             </button>
         </div>

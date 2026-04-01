@@ -194,6 +194,30 @@
 }
 
 .ex-play-icon { font-size: 20px; color: var(--color-on-surface-variant); }
+.ex-edit-icon { font-size: 20px; color: var(--color-on-surface-variant); }
+
+/* Edit done button */
+.ex-edit-done-btn {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #000;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+    padding: 0.25rem;
+}
+.ex-edit-done-btn:hover { opacity: 0.5; }
+
+/* Edit mode items — full opacity, no status decoration */
+.ex-item.is-edit {
+    opacity: 1;
+}
+.ex-item.is-edit .ex-name {
+    color: #000;
+}
 
 /* Empty state */
 .ex-empty {
