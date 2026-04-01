@@ -32,11 +32,14 @@ export const TimerScreen: React.FC = () => {
         ? routineExercises.every(ex => ex.id === Number(id) || isExerciseCompleted(ex.id, ex.sets))
         : false;
 
+    const targetReps = exercise?.reps || 0;
+
     const [timerState, setTimerState] = useState<TimerState>('ready');
     const [currentSet, setCurrentSet] = useState(1);
     const [currentSide, setCurrentSide] = useState<Side>(exercise?.isPaired ? 'left' : 'both');
     const [timeLeft, setTimeLeft]       = useState(0);
     const [isRunning, setIsRunning]     = useState(false);
+    const [repsLeft, setRepsLeft]       = useState(targetReps);
 
     // Reset all state when navigating to a different exercise (same component reused by router)
     useEffect(() => {
@@ -45,6 +48,7 @@ export const TimerScreen: React.FC = () => {
         setCurrentSide(exercise?.isPaired ? 'left' : 'both');
         setTimeLeft(0);
         setIsRunning(false);
+        setRepsLeft(targetReps);
     }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -66,6 +70,7 @@ export const TimerScreen: React.FC = () => {
             : 0;
         setTimeLeft(duration);
         setIsRunning(exercise.type === 'hold');
+        setRepsLeft(exercise.reps || 0);
         if (settings.hapticFeedback) haptics.medium();
         if (settings.timerSound)     sounds.start();
     }, [exercise, settings]);
@@ -110,6 +115,13 @@ export const TimerScreen: React.FC = () => {
             startWork();
         }
     }, [timerState, exercise, currentSide, currentSet, settings, completeExercise, startWork]);
+
+    const handleRepDone = useCallback(() => {
+        const next = repsLeft - 1;
+        setRepsLeft(next);
+        if (settings.hapticFeedback) haptics.medium();
+        if (next <= 0) handleTimerComplete();
+    }, [repsLeft, settings, handleTimerComplete]);
 
     useEffect(() => {
         if (!isRunning || timeLeft <= 0) return;
@@ -233,8 +245,12 @@ export const TimerScreen: React.FC = () => {
                                 /* Rep count — massive number */
                                 <div className="timer-rep-display">
                                     <div className="timer-rep-number-row">
-                                        <span className="timer-rep-count">{exercise.reps}</span>
+                                        <span className="timer-rep-count">{repsLeft}</span>
                                         <span className="timer-rep-unit">REPS</span>
+                                    </div>
+                                    <div className="timer-rep-target">
+                                        <span className="timer-target-label">Target</span>
+                                        <span className="timer-target-value">{exercise.reps}</span>
                                     </div>
                                 </div>
                             )}
@@ -245,11 +261,9 @@ export const TimerScreen: React.FC = () => {
                                 <button className="timer-btn-primary" onClick={handleTimerComplete}>
                                     Complete Set
                                 </button>
-                                <button className="timer-btn-secondary" onClick={() => {
-                                    /* increment — could adjust reps if needed */
-                                }}>
-                                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>add</span>
-                                    Increment
+                                <button className="timer-btn-secondary" onClick={handleRepDone}>
+                                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>remove</span>
+                                    Log Rep
                                 </button>
                             </div>
                         )}
