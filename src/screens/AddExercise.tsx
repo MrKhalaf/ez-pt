@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useExercises } from '../context/ExerciseContext';
 import { Button } from '../components/Button';
-import { Exercise, ExerciseType, ExerciseCategory } from '../models/Exercise';
+import { Exercise, ExerciseType } from '../models/Exercise';
 import './EditExercise.css';
 
 export const AddExercise: React.FC = () => {
     const navigate = useNavigate();
-    const { exercises, addExercise } = useExercises();
+    const [searchParams] = useSearchParams();
+    const { exercises, categories, addExercise } = useExercises();
+
+    const prefilledCategory = searchParams.get('category') || categories[0] || 'Core Stability';
 
     const [exercise, setExercise] = useState<Omit<Exercise, 'id'>>({
         name: '',
-        category: 'Core Stability',
+        category: prefilledCategory,
         type: 'rep',
         sets: 3,
         reps: 10,
@@ -20,8 +23,6 @@ export const AddExercise: React.FC = () => {
         instructions: [''],
         isPaired: false,
     });
-
-    const categories: ExerciseCategory[] = ['Core Stability', 'Lower Body', 'Upper Body', 'Mobility', 'Other'];
 
     const handleSave = () => {
         if (!exercise.name.trim()) {
@@ -78,7 +79,7 @@ export const AddExercise: React.FC = () => {
 
                     {/* Category Selection */}
                     <div className="form-group">
-                        <label className="form-label">Category</label>
+                        <label className="form-label">Session</label>
                         <div className="category-selector">
                             {categories.map(cat => (
                                 <button

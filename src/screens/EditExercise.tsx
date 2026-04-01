@@ -3,12 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useExercises } from '../context/ExerciseContext';
 import { Button } from '../components/Button';
 import { Exercise, ExerciseType } from '../models/Exercise';
+
 import './EditExercise.css';
 
 export const EditExercise: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { getExerciseById, updateExercise, deleteExercise } = useExercises();
+    const { getExerciseById, updateExercise, deleteExercise, categories } = useExercises();
 
     const [exercise, setExercise] = useState<Exercise | null>(null);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -68,6 +69,22 @@ export const EditExercise: React.FC = () => {
                             onChange={e => setExercise({ ...exercise, name: e.target.value })}
                             placeholder="Enter exercise name"
                         />
+                    </div>
+
+                    {/* Category */}
+                    <div className="form-group">
+                        <label className="form-label">Session</label>
+                        <div className="category-selector">
+                            {categories.map(cat => (
+                                <button
+                                    key={cat}
+                                    className={`category-option ${exercise.category === cat ? 'active' : ''}`}
+                                    onClick={() => setExercise({ ...exercise, category: cat })}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Type Selection */}
