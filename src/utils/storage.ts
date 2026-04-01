@@ -7,7 +7,10 @@ const STORAGE_KEYS = {
     PROGRESS: 'rehabber_progress',
     SETTINGS: 'rehabber_settings',
     DAILY_PROGRESS: 'rehabber_daily_progress',
+    CATEGORIES: 'rehabber_categories',
 } as const;
+
+export const DEFAULT_CATEGORIES = ['Core Stability', 'Lower Body'];
 
 // Generic storage helpers
 const getItem = <T>(key: string, defaultValue: T): T => {
@@ -169,6 +172,12 @@ export const settingsStorage = {
         const current = settingsStorage.get();
         settingsStorage.save({ ...current, ...updates });
     }
+};
+
+// Category storage
+export const categoryStorage = {
+    getAll: (): string[] => getItem(STORAGE_KEYS.CATEGORIES, DEFAULT_CATEGORIES),
+    save: (categories: string[]): void => setItem(STORAGE_KEYS.CATEGORIES, categories),
 };
 
 // Utility: Calculate streak

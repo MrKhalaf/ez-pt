@@ -1,9 +1,4 @@
-export type ExerciseCategory =
-    | 'Core Stability'
-    | 'Lower Body'
-    | 'Upper Body'
-    | 'Mobility'
-    | 'Other';
+export type ExerciseCategory = string;
 
 export type ExerciseType = 'rep' | 'hold' | 'step';
 
