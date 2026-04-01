@@ -1,22 +1,30 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Exercise } from '../models/Exercise';
-import { exerciseStorage } from '../utils/storage';
+import { exerciseStorage, categoryStorage, DEFAULT_CATEGORIES } from '../utils/storage';
 import { defaultExercises } from '../data/defaultExercises';
 
 interface ExerciseContextType {
     exercises: Exercise[];
+    categories: string[];
     addExercise: (exercise: Exercise) => void;
     updateExercise: (id: number, exercise: Exercise) => void;
     deleteExercise: (id: number) => void;
     getExerciseById: (id: number) => Exercise | undefined;
     getExercisesByCategory: (category: string) => Exercise[];
-    syncNewDefaults: () => number; // Returns count of new exercises added
+    addCategory: (name: string) => void;
+    deleteCategory: (name: string) => void;
+    syncNewDefaults: () => number;
 }
 
 const ExerciseContext = createContext<ExerciseContextType | undefined>(undefined);
 
 export const ExerciseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+
+    useEffect(() => {
+        setCategories(categoryStorage.getAll());
+    }, []);
 
     useEffect(() => {
         // Load exercises from storage, or use defaults if empty
@@ -67,6 +75,20 @@ export const ExerciseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return exercises.filter(ex => ex.category === category);
     };
 
+    const addCategory = (name: string) => {
+        const trimmed = name.trim();
+        if (!trimmed || categories.includes(trimmed)) return;
+        const updated = [...categories, trimmed];
+        setCategories(updated);
+        categoryStorage.save(updated);
+    };
+
+    const deleteCategory = (name: string) => {
+        const updated = categories.filter(c => c !== name);
+        setCategories(updated);
+        categoryStorage.save(updated);
+    };
+
     const syncNewDefaults = () => {
         // Add any default exercises that don't exist in current list
         const existingIds = new Set(exercises.map(ex => ex.id));
@@ -84,11 +106,14 @@ export const ExerciseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return (
         <ExerciseContext.Provider value={{
             exercises,
+            categories,
             addExercise,
             updateExercise,
             deleteExercise,
             getExerciseById,
             getExercisesByCategory,
+            addCategory,
+            deleteCategory,
             syncNewDefaults
         }}>
             {children}
