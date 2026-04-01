@@ -352,6 +352,38 @@
     background: var(--color-outline-variant);
 }
 
+/* ── Routine progress (dots) ── */
+.timer-routine-progress {
+    margin-bottom: 2.5rem;
+}
+
+.timer-routine-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-on-surface-variant);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.timer-routine-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.timer-routine-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-outline-variant);
+    transition: background var(--transition-fast);
+}
+
+.timer-routine-dot--done {
+    background: #000;
+}
+
 /* ── Progress bar (thin line above nav) ── */
 .timer-progress-bar {
     position: fixed;

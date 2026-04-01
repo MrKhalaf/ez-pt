@@ -108,7 +108,7 @@ export const ExerciseList: React.FC = () => {
 
                         const destination = isEditMode
                             ? `/exercises/edit/${exercise.id}`
-                            : `/timer/${exercise.id}`;
+                            : `/timer/${exercise.id}${category ? `?category=${encodeURIComponent(category)}` : ''}`;
 
                         return (
                             <Link

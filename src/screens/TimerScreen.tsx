@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useExercises } from '../context/ExerciseContext';
 import { useProgress } from '../context/ProgressContext';
 import { useTheme } from '../context/ThemeContext';
@@ -11,12 +11,26 @@ type Side = 'left' | 'right' | 'both';
 
 export const TimerScreen: React.FC = () => {
     const { id }     = useParams<{ id: string }>();
+    const [searchParams] = useSearchParams();
     const navigate   = useNavigate();
-    const { getExerciseById }      = useExercises();
-    const { markExerciseComplete } = useProgress();
+    const { getExerciseById, getExercisesByCategory } = useExercises();
+    const { markExerciseComplete, isExerciseCompleted } = useProgress();
     const { settings }             = useTheme();
 
+    const category = searchParams.get('category');
     const exercise = getExerciseById(Number(id));
+
+    // Routine: ordered exercises in this category
+    const routineExercises = category ? getExercisesByCategory(category) : [];
+    const currentIndex = routineExercises.findIndex(ex => ex.id === Number(id));
+
+    // Find the next uncompleted exercise after the current one
+    const nextExercise = routineExercises.length > 0
+        ? routineExercises.find((ex, i) => i > currentIndex && !isExerciseCompleted(ex.id, ex.sets))
+        : undefined;
+    const isRoutineComplete = category
+        ? routineExercises.every(ex => ex.id === Number(id) || isExerciseCompleted(ex.id, ex.sets))
+        : false;
 
     const [timerState, setTimerState] = useState<TimerState>('ready');
     const [currentSet, setCurrentSet] = useState(1);
@@ -279,7 +293,9 @@ export const TimerScreen: React.FC = () => {
                 {timerState === 'complete' && (
                     <div className="timer-state fade-in">
                         <section className="timer-title-section">
-                            <span className="timer-complete-label">Workout Complete</span>
+                            <span className="timer-complete-label">
+                                {isRoutineComplete ? 'Routine Complete' : 'Exercise Complete'}
+                            </span>
                             <h2 className="timer-exercise-name">{exercise.name}</h2>
                         </section>
 
@@ -301,19 +317,61 @@ export const TimerScreen: React.FC = () => {
                             </div>
                         </section>
 
+                        {/* Routine progress indicator */}
+                        {category && routineExercises.length > 1 && (
+                            <section className="timer-routine-progress">
+                                <span className="timer-routine-label">
+                                    {isRoutineComplete
+                                        ? `${routineExercises.length}/${routineExercises.length} EXERCISES`
+                                        : `${currentIndex + 1}/${routineExercises.length} EXERCISES`}
+                                </span>
+                                <div className="timer-routine-dots">
+                                    {routineExercises.map((ex) => (
+                                        <div
+                                            key={ex.id}
+                                            className={`timer-routine-dot ${
+                                                ex.id === Number(id) || isExerciseCompleted(ex.id, ex.sets)
+                                                    ? 'timer-routine-dot--done'
+                                                    : ''
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
                         <div className="timer-actions">
-                            <button
-                                className="timer-btn-primary"
-                                onClick={() => navigate('/exercises')}
-                            >
-                                Continue
-                            </button>
-                            <button
-                                className="timer-btn-ghost"
-                                onClick={() => navigate('/')}
-                            >
-                                Back to Sessions
-                            </button>
+                            {nextExercise ? (
+                                <>
+                                    <button
+                                        className="timer-btn-primary"
+                                        onClick={() => navigate(`/timer/${nextExercise.id}?category=${encodeURIComponent(category!)}`, { replace: true })}
+                                    >
+                                        Next: {nextExercise.name}
+                                    </button>
+                                    <button
+                                        className="timer-btn-ghost"
+                                        onClick={() => navigate(`/exercises?category=${encodeURIComponent(category!)}`)}
+                                    >
+                                        Back to Routine
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <button
+                                        className="timer-btn-primary"
+                                        onClick={() => navigate(category ? `/exercises?category=${encodeURIComponent(category)}` : '/exercises')}
+                                    >
+                                        {isRoutineComplete ? 'Done' : 'Continue'}
+                                    </button>
+                                    <button
+                                        className="timer-btn-ghost"
+                                        onClick={() => navigate('/')}
+                                    >
+                                        Back to Sessions
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 )}
