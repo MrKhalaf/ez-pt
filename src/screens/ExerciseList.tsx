@@ -11,7 +11,7 @@ export const ExerciseList: React.FC = () => {
     const navigate       = useNavigate();
 
     const { exercises, categories }                  = useExercises();
-    const { isExerciseCompleted, todayProgress }     = useProgress();
+    const { isExerciseCompleted }     = useProgress();
 
     const filteredExercises = category
         ? exercises.filter(ex => ex.category === category)
@@ -101,7 +101,6 @@ export const ExerciseList: React.FC = () => {
                         const inProgress = !completed && exercise.id === inProgressId;
                         const incomplete = !completed && !inProgress;
 
-                        const doneSets = todayProgress.filter(p => p.exerciseId === exercise.id).length;
                         const metaStr  = exercise.type === 'hold'
                             ? `${exercise.holdDuration}S HOLD`
                             : `${exercise.reps} REPS`;
@@ -139,10 +138,7 @@ export const ExerciseList: React.FC = () => {
 
                                     <h3 className="ex-name">{exercise.name.toUpperCase()}</h3>
                                     <p className="ex-meta">
-                                        {isEditMode
-                                            ? `${exercise.sets} SETS\u00a0\u2022\u00a0${metaStr}${exercise.isPaired ? '\u00a0\u2022\u00a0L + R' : ''}`
-                                            : `${doneSets} / ${exercise.sets} SETS\u00a0\u2022\u00a0${metaStr}${exercise.isPaired ? '\u00a0\u2022\u00a0L + R' : ''}`
-                                        }
+                                        {`${exercise.sets} SETS\u00a0\u2022\u00a0${metaStr}${exercise.isPaired ? '\u00a0\u2022\u00a0L + R' : ''}`}
                                     </p>
                                 </div>
 
