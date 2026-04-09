@@ -155,6 +155,19 @@ input, textarea, select {
   }
 }
 
+/* iOS safe area — push sticky headers below the status bar / notch
+   when running as an installed PWA with viewport-fit=cover */
+@supports (padding: env(safe-area-inset-top)) {
+  .timer-header,
+  .home-header,
+  .exercise-header,
+  .progress-header,
+  .settings-header,
+  .edit-header {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
 /* Scrollbar hidden */
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }

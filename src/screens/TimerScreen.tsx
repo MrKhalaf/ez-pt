@@ -82,14 +82,27 @@ export const TimerScreen: React.FC = () => {
         if (timerState === 'work') {
             if (settings.timerSound) sounds.complete();
 
+            const totalSets = exercise?.sets || 0;
+
+            // Paired exercises run all sets on the left side, then all sets on the right.
             if (exercise?.isPaired && currentSide === 'left') {
-                setCurrentSide('right');
-                setTimerState('rest');
-                setTimeLeft(exercise.restTime);
-                setIsRunning(true);
+                if (currentSet < totalSets) {
+                    // More left sets to go — advance and rest
+                    setCurrentSet(currentSet + 1);
+                    setTimerState('rest');
+                    setTimeLeft(exercise.restTime);
+                    setIsRunning(true);
+                } else {
+                    // All left sets done — switch to the right side starting at set 1
+                    setCurrentSide('right');
+                    setCurrentSet(1);
+                    setTimerState('rest');
+                    setTimeLeft(exercise.restTime);
+                    setIsRunning(true);
+                }
             } else if (exercise?.isPaired && currentSide === 'right') {
-                setCurrentSide('left');
-                if (currentSet < (exercise?.sets || 0)) {
+                if (currentSet < totalSets) {
+                    setCurrentSet(currentSet + 1);
                     setTimerState('rest');
                     setTimeLeft(exercise.restTime);
                     setIsRunning(true);
@@ -97,7 +110,8 @@ export const TimerScreen: React.FC = () => {
                     completeExercise();
                 }
             } else {
-                if (currentSet < (exercise?.sets || 0)) {
+                if (currentSet < totalSets) {
+                    setCurrentSet(currentSet + 1);
                     setTimerState('rest');
                     setTimeLeft(exercise!.restTime);
                     setIsRunning(true);
@@ -107,11 +121,6 @@ export const TimerScreen: React.FC = () => {
             }
         } else if (timerState === 'rest') {
             if (settings.timerSound) sounds.rest();
-            if (exercise?.isPaired && currentSide === 'left') {
-                setCurrentSet(prev => prev + 1);
-            } else if (!exercise?.isPaired) {
-                setCurrentSet(prev => prev + 1);
-            }
             startWork();
         }
     }, [timerState, exercise, currentSide, currentSet, settings, completeExercise, startWork]);
@@ -139,10 +148,13 @@ export const TimerScreen: React.FC = () => {
     const today   = new Date();
     const dateStr = today.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' });
 
-    // Progress bar percentage for the thin line above nav
+    // Progress bar percentage for the thin line above nav.
+    // With the all-left-then-all-right flow, currentSet counts within the current side.
+    // doneSets = (left sets already finished) + (current set index within side - 1)
     const totalSets = exercise.sets * (exercise.isPaired ? 2 : 1);
-    const doneSets  = (currentSet - 1) * (exercise.isPaired ? 2 : 1)
-        + (exercise.isPaired ? (currentSide === 'right' ? 1 : 0) : 0);
+    const doneSets  = exercise.isPaired
+        ? (currentSide === 'right' ? exercise.sets : 0) + (currentSet - 1)
+        : (currentSet - 1);
     const overallProgress = totalSets > 0 ? (doneSets / totalSets) * 100 : 0;
 
     const holdDuration   = exercise.holdDuration || settings.defaultHoldTime;
@@ -283,9 +295,11 @@ export const TimerScreen: React.FC = () => {
                         <section className="timer-title-section">
                             <h2 className="timer-exercise-name">Rest</h2>
                             <p className="timer-set-label">
-                                {exercise.isPaired && currentSide === 'right'
-                                    ? 'RIGHT SIDE NEXT'
-                                    : `SET ${Math.min(currentSet + 1, exercise.sets)} NEXT`}
+                                {exercise.isPaired
+                                    ? (currentSide === 'right' && currentSet === 1
+                                        ? 'RIGHT SIDE NEXT'
+                                        : `SET ${currentSet} NEXT \u00b7 ${currentSide === 'left' ? 'LEFT' : 'RIGHT'}`)
+                                    : `SET ${currentSet} NEXT`}
                             </p>
                         </section>
 
